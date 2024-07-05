@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: #ffa4a3;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        background-color: white;
+    }
+
+    .brand {
+        display: flex;
+        justify-content: center;
+        background-color: #e94e5c;
+        width: 226px;
+    }
+
+    .navitems {
+        display: flex;
+        align-items: center;
+    }
+
+    .navitems>a {
+        padding-left: 100px;
+    }
+
+    .profile {
+        height: 40px;
+    }
+
+    .bell {
+        height: 50px;
+
+    }
+
+    .addnew {
+        background-color: red;
+        padding: 0%;
+        height: 2px;
+        text-align: center;
+        padding-bottom: 20px;
+        width: 90px;
+        border-radius: 5px;
+    }
+
+    .button {
+        margin-right: 70px;
+
+    }
+
+    .search {
+        margin-top: 20px;
+
+    }
+
+    .searchbar {
+        width: 400px;
+        height: 20px;
+    }
+
+    .main {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .left {
+        background-color: #e94e5c;
+
+
+    }
+
+    .icons {
+        height: 40px
+    }
+
+    .options {
+        display: flex;
+        align-items: center;
+        padding: 0px 43px 0px 30px;
+        color: white;
+        background-color: #ed4c5c;
+    }
+
+    .right {
+        background-color: whitesmoke;
+        width: 100%;
+        padding: 25px 30px;
+
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .topbox1,
+    .topbox2,
+    .topbox3,
+    .topbox4 {
+        width: 250px;
+        height: 120px;
+        background-color: white;
+        padding: 0px 15px 0px 15px;
+    }
+
+    .topbox1 {
+        background-image: url("https://img.icons8.com/?size=100&id=38833&format=png&color=ed4c5c");
+        background-repeat: no-repeat;
+        background-position: 140px center;
+    }
+
+    .topbox2 {
+        background-image: url("https://img.icons8.com/?size=100&id=38HJBFwphJ3I&format=png&color=ed4c5c");
+        background-repeat: no-repeat;
+        background-position: 140px center;
+    }
+
+    .topbox3 {
+        background-image: url("https://img.icons8.com/?size=100&id=ADK0QQTpkS9U&format=png&color=ed4c5c");
+        background-repeat: no-repeat;
+        background-position: 140px center;
+    }
+
+    .topbox4 {
+        background-image: url("https://img.icons8.com/?size=100&id=7607&format=png&color=ed4c5c");
+        background-repeat: no-repeat;
+        background-position: 140px center;
+    }
+
+    .bottom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding-top: 50px;
+    }
+
+    .b1 {
+        background-color: white;
+        padding: 0px 50px 20px 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    }
+
+    .b1head {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom: 5px solid whitesmoke;
+       
+    }
+
+    .b2body{
+        background-color: white;
+        padding: 0px 30px 0px 0px;
+       
+        
+    }
+
+    .b2head {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom: 5px solid whitesmoke;
+    }
+
+    .button {
+        background-color: red;
+    }
+    th,td{
+    text-align: left;
+    padding: 10px 10px 5px 50px;
+  }
+  .b2{
+    background-color: white;
+    padding: 0px 30px 0px 0px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+</style>
+
+<body>
+    <div class="navbar">
+        <div class="brand">
+            <h2>brand</h2>
+        </div>
+
+        <div class="search">
+            <input type="text" placeholder="search" class="searchbar">
+        </div>
+
+        <div class="navitems">
+
+            <button class="addnew">add new</button>
+
+            <a href="bell">
+
+                <img class="bell ring" src="https://img.icons8.com/?size=100&id=54481&format=png&color=000000">
+            </a>
+
+            <a herf="pic">
+                <img class="profile" src="https://img.icons8.com/?size=100&id=23242&format=png&color=000000">
+            </a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="left">
+            <div class="options">
+                <img class="icons" src="https://img.icons8.com/?size=100&id=92zOGOmxGkWj&format=png&color=FFFFFF">
+                <h2>Dashboard</h2>
+            </div>
+            <div class="options">
+                <img class="icons" src="https://img.icons8.com/?size=100&id=38834&format=png&color=FFFFFF">
+                <h2>Students</h2>
+            </div>
+            <div class="options">
+                <img class="icons" src="https://img.icons8.com/?size=100&id=18899&format=png&color=FFFFFF">
+                <h2>Teachers</h2>
+            </div>
+            <div class="options">
+                <img class="icons" src="https://img.icons8.com/?size=100&id=uT0SrAcIUX6W&format=png&color=FFFFFF">
+                <h2>schools</h2>
+            </div>
+            <div class="options">
+                <img class="icons" src="https://img.icons8.com/?size=100&id=17133&format=png&color=FFFFFF">
+                <h2>income</h2>
+            </div>
+            <div class="options">
+                <img class="icons" src="https://img.icons8.com/?size=100&id=2908&format=png&color=FFFFFF">
+                <h2>Help</h2>
+            </div>
+            <div class="options">
+                <img class="icons" src="https://img.icons8.com/?size=100&id=2969&format=png&color=FFFFFF">
+                <h2>Settings</h2>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="top">
+                <div class="topbox1">
+
+                    <h2>2194</h2>
+                    <h3>Student</h3>
+                </div>
+                <div class="topbox2">
+
+                    <h2>53</h2>
+                    <h3>Teachers</h3>
+                </div>
+                <div class="topbox3">
+
+                    <h2>5</h2>
+                    <h3>School</h3>
+                </div>
+                <div class="topbox4">
+
+                    <h2>3500000</h2>
+                    <h3>income</h3>
+                </div>
+
+            </div>
+            <div class="bottom">
+                <div class="b1">
+                    <div class="b1head">
+                        <h2>Recent Payments</h2>
+                        <button class="button">View All</button>
+                    </div>
+
+                    <div class="b1body">
+                        <table class="b1table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>School</th>
+                                    <th>Amount</th>
+                                    <th>Option</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>Springfield High</td>
+                                    <td>$150</td>
+                                    <td><button class="button">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Smith</td>
+                                    <td>Rivertown Academy</td>
+                                    <td>$200</td>
+                                    <td><button class="button">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Emily Johnson</td>
+                                    <td>Mountainview School</td>
+                                    <td>$175</td>
+                                    <td><button class="button">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Michael Brown</td>
+                                    <td>Sunrise Institute</td>
+                                    <td>$250</td>
+                                    <td><button class="button">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Jessica Williams</td>
+                                    <td>Westside Prep</td>
+                                    <td>$300</td>
+                                    <td><button class="button">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>David Miller</td>
+                                    <td>Greenwood School</td>
+                                    <td>$225</td>
+                                    <td><button class="button">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Amanda Davis</td>
+                                    <td>Lakeside Academy</td>
+                                    <td>$275</td>
+                                    <td><button class="button">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="b2">
+
+					<div class="b2head">
+						<h2>New Students</h2>
+						<button class="button">View All</button>
+					</div>
+
+
+                <div class="b2body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Profile</th>
+                                <th>Name</th>
+                                <th>Option</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="/HTMLCSS/IMG/bean.jpg" alt="Profile 1" class="pictab" />
+                                </td>
+                                <td>John Doe</td>
+                                <td><img src="https://img.icons8.com/?size=100&id=83253&format=png&color=ed4c5c"
+                                        alt="Profile 1" class="picinfo" /></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="/HTMLCSS/IMG/bean.jpg" alt="Profile 2" class="pictab" />
+                                </td>
+                                <td>Jane Smith</td>
+                                <td><img src="https://img.icons8.com/?size=100&id=83253&format=png&color=ed4c5c"
+                                        alt="Profile 1" class="picinfo" /></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="/HTMLCSS/IMG/bean.jpg" alt="Profile 3" class="pictab" />
+                                </td>
+                                <td>Emily Johnson</td>
+                                <td><img src="https://img.icons8.com/?size=100&id=83253&format=png&color=ed4c5c"
+                                        alt="Profile 1" class="picinfo" /></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="/HTMLCSS/IMG/bean.jpg" alt="Profile 4" class="pictab" />
+                                </td>
+                                <td>Michael Brown</td>
+                                <td><img src="https://img.icons8.com/?size=100&id=83253&format=png&color=ed4c5c"
+                                        alt="Profile 1" class="picinfo" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -2,10 +2,10 @@
 int main()
 {
     int i = 0 ,j=0;
-    char arr[5];
-    char brr[5];
+    int arr[5];
+    int brr[5];
     printf("enter the 5 elements of array:");
-    for(i=0;i<5;i++){
+    for(i=1;i<5;i++){
         scanf("%d",&arr[i]);
     }
     for ( i = 0; i < 5; i = i + 2)
@@ -14,7 +14,7 @@ int main()
         j++;
     }
     printf("elements at even indices");
-     for(i=0;i<5;i++){
+     for(i=1;i<j;i++){
         
         printf("%d",brr[i]);
     }

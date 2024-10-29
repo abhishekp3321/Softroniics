@@ -1,8 +1,6 @@
 .vscode/*
-TEST/*
-TEST/
-C/.vscode
-C/.vscode/*
+/.vscode
+/vscode/*
 
 
 # Local History for Visual Studio Code

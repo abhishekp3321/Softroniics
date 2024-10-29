@@ -1,0 +1,35 @@
+
+.heading {
+    justify-content: center;
+    display: flex;
+}
+
+img {
+    height: 200px;
+    width: 200px;
+}
+
+.sub {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main {
+    flex:33%;
+    text-align: center;
+}
+
+.main:hover {
+    background-color: lightgray;
+}
+
+@media screen and (max-width: 900px) {
+    .main{
+        flex:50%
+    }
+}
+@media screen and (max-width: 300px) {
+    .main{
+        flex:100%
+    }
+}

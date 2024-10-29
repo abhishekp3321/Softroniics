@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+</head>
+<style>
+    ul{
+        list-style-type:none;
+        margin: 0;
+        padding: 0;
+        background-color: #6f2df5;
+        overflow: hidden;
+    }
+    li{
+        float: left;
+        
+
+    }
+    li a,button{
+        display:block;
+        text-align: center;
+        text-decoration: none;
+        padding: 15px 15px;
+        color: white;
+    }
+    li a:hover{
+        background-color: gray;
+    }
+    .dropdown:hover .content{
+        display: block;
+
+    }
+    .content{
+        display:none;
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+    .content a{
+        color: black;
+        margin-right: 20px;
+    }
+    .content a:hover{
+        background-color: #d6d6d6;
+    }
+    .searchbar{
+        margin-top: 8px;
+        height: 28px;
+        width: 200px;
+        border-radius: 8px;
+        border-width: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        
+    }
+    .search{
+        display: block;
+        margin-left: 400px;
+    }
+</style>
+<body>
+    <ul>
+        <li><a href="#home"><img src="/HTML/IMG/bootstrap-5-1.svg" width="20px" height="auto"></a></li>
+
+        <li><a href="#news">Docs</a></li>
+        <li><a href="#gallery">Examples</a></li>
+        <li><a href="#gallery">Icons</a></li>
+        <li><a href="#gallery">Themes</a></li>
+        <li><a href="#gallery">Blog</a></li>
+        
+        <li class="search"><input type=text placeholder=search class="searchbar"></li>
+
+        
+        <li style="float: right;"class="dropdown">
+            <a class="#button" href="#more">Light </a>
+            <div class="content">
+                <a href="#mentors">Dark</a>
+                <a href="#contact">Follow System</a>  
+            </div>
+        </li>
+    </ul>
+</body>
+</html>

@@ -10,4 +10,4 @@ const Mainnnn = () => {
   )
 }
 
-export default Mainnnn
+export default Mainnnn  

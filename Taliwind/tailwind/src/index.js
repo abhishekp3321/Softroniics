@@ -30,6 +30,7 @@ import { Teamprovider} from './rendering/Teamprovider'
 import { File } from './rendering/File'
 import { Languageprovider } from "./rendering/Languageprovider";
 import { Multiple } from "./rendering/Multiple";
+import { Calculator } from "./Calculator";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -48,7 +49,7 @@ root.render(
        </Routes>
      </BrowserRouter> */}
 
-   <Languageprovider><Multiple></Multiple></Languageprovider>
+<Calculator></Calculator>
   </React.StrictMode>
 );
 

@@ -30,7 +30,8 @@ import { Teamprovider} from './rendering/Teamprovider'
 import { File } from './rendering/File'
 import { Languageprovider } from "./rendering/Languageprovider";
 import { Multiple } from "./rendering/Multiple";
-import { Calculator } from "./Calculator";
+// import { Calculator } from "./Calculator";
+import { Todolist } from "./Todolist";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -48,8 +49,7 @@ root.render(
          <Route path="/key" element={<Keypro />}></Route>
        </Routes>
      </BrowserRouter> */}
-
-<Calculator></Calculator>
+<Todolist></Todolist>
   </React.StrictMode>
 );
 

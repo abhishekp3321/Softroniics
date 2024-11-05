@@ -32,6 +32,8 @@ import { Languageprovider } from "./rendering/Languageprovider";
 import { Multiple } from "./rendering/Multiple";
 // import { Calculator } from "./Calculator";
 import { Todolist } from "./Todolist";
+import { Counter } from "./Counter";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -49,7 +51,7 @@ root.render(
          <Route path="/key" element={<Keypro />}></Route>
        </Routes>
      </BrowserRouter> */}
-<Todolist></Todolist>
+<Counter></Counter>
   </React.StrictMode>
 );
 

@@ -40,6 +40,7 @@ import { Homecart } from "./reduxfile/online/Homecart";
 import { Addtocart } from "./reduxfile/online/Addtocart";
 import { Formhome } from "./Formhome";
 import { Formview } from "./Formview";
+import { Formedit } from "./Formedit";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -61,6 +62,7 @@ root.render(
          <Route path="/add" element={<Addtocart />}></Route>
          <Route path="/formhome" element={<Formhome />}></Route>
          <Route path="/formview" element={<Formview/>}></Route>
+         <Route path="/formedit/:id" element={<Formedit/>}></Route>
 
        </Routes>
        

@@ -33,11 +33,20 @@ import { Multiple } from "./rendering/Multiple";
 // import { Calculator } from "./Calculator";
 import { Todolist } from "./Todolist";
 import { Counter } from "./Counter";
+import { Provider } from "react-redux";
+import Store from "./reduxfile/Store";
+import { Counterr } from "./reduxfile/Counterr";
+import { Homecart } from "./reduxfile/online/Homecart";
+import { Addtocart } from "./reduxfile/online/Addtocart";
+import { Formhome } from "./Formhome";
+import { Formview } from "./Formview";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    {/* <BrowserRouter>
+
+    <Provider store={Store}>
+    <BrowserRouter>
        <Routes>
          <Route path="/main" element={<Main></Main>}></Route>
        <Route path="/home" element={<Home></Home>}></Route>
@@ -48,10 +57,17 @@ root.render(
          <Route path="/wheather" element={<Wheather></Wheather>}></Route>
          <Route path="/formset" element={<Formset></Formset>}></Route>
          <Route path="/formdata" element={<Foorm />}></Route>
-         <Route path="/key" element={<Keypro />}></Route>
+         <Route path="/homecart" element={<Homecart/>}></Route>
+         <Route path="/add" element={<Addtocart />}></Route>
+         <Route path="/formhome" element={<Formhome />}></Route>
+         <Route path="/formview" element={<Formview/>}></Route>
+
        </Routes>
-     </BrowserRouter> */}
-<Counter></Counter>
+       
+     </BrowserRouter>
+     </Provider>
+     {/* <Formhome></Formhome> */}
+     {/* <Formview></Formview> */}
   </React.StrictMode>
 );
 

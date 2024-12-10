@@ -12,7 +12,7 @@ export const Formset = () => {
     event.preventDefault()
     setdata(data)
     console.log(data);
-  }
+  } 
   return (
     <div className='flex justify-center items-center min-h-screen bg-lime-500'>
       <div className='bg-white  py-8 px-28 rounded-lg shadow-lime-950'>

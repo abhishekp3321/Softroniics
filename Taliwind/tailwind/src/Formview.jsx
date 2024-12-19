@@ -10,7 +10,6 @@ export const Formview = () => {
             const respones = await axios.get(`http://127.0.0.1:8000/user/view`, viewdata)
             // console.log(respones);
             setviewdata(respones.data)
-            console.log(viewdata);
 
 
         } catch (error) {
@@ -23,12 +22,16 @@ export const Formview = () => {
     useEffect(() => {
         fetchdata()
     }, [])
+    console.log(viewdata);
 
     const del = async (id) => {
         try {
             await axios.delete(`http://127.0.0.1:8000/user/delete/${id}`)
+            alert('Deleted successfully!')
             fetchdata()
+
         }
+
         catch (error) {
             console.log(error);
         }
@@ -55,6 +58,16 @@ export const Formview = () => {
                                             <p className="text-xl font-semibold text-gray-800">
                                                 <strong className="text-gray-600">Age:</strong> {user.age}
                                             </p>
+                                            <p className="text-xl font-semibold text-gray-800">
+                                                <strong className="text-gray-600">Email:</strong> {user.email}
+                                            </p>
+                                            <p className="text-xl font-semibold text-gray-800">
+                                                <strong className="text-gray-600">password:</strong> {user.password}
+                                            </p>
+
+                                        </div>
+                                        <div>
+                                            <img src={`http://127.0.0.1:8000/uploads/${user.image}`} alt="User" />
                                         </div>
                                         <div className="flex justify-between gap-4">
                                             <Link to={`/formedit/${user._id}`}>

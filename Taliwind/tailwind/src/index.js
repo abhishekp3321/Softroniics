@@ -26,8 +26,8 @@ import Mainnnn from "./rendering/Mainnnn";
 import Lead from "./rendering/Lead";
 import { ThemeProvider } from "react-bootstrap";
 
-import { Teamprovider} from './rendering/Teamprovider'
-import { File } from './rendering/File'
+import { Teamprovider } from "./rendering/Teamprovider";
+import { File } from "./rendering/File";
 import { Languageprovider } from "./rendering/Languageprovider";
 import { Multiple } from "./rendering/Multiple";
 // import { Calculator } from "./Calculator";
@@ -41,35 +41,36 @@ import { Addtocart } from "./reduxfile/online/Addtocart";
 import { Formhome } from "./Formhome";
 import { Formview } from "./Formview";
 import { Formedit } from "./Formedit";
+import { Formlogin } from "./Formlogin";
+import { Formprofile } from "./Formprofile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-
     <Provider store={Store}>
-    <BrowserRouter>
-       <Routes>
-         <Route path="/main" element={<Main></Main>}></Route>
-       <Route path="/home" element={<Home></Home>}></Route>
-         <Route path="/about" element={<About></About>}></Route>
-       <Route path="/contact" element={<Contact></Contact>}></Route>
-        <Route path="/movie" element={<Movie></Movie>}></Route>
-        <Route path="/movied/:id" element={<Movied></Movied>}></Route>
-         <Route path="/wheather" element={<Wheather></Wheather>}></Route>
-         <Route path="/formset" element={<Formset></Formset>}></Route>
-         <Route path="/formdata" element={<Foorm />}></Route>
-         <Route path="/homecart" element={<Homecart/>}></Route>
-         <Route path="/add" element={<Addtocart />}></Route>
-         <Route path="/formhome" element={<Formhome />}></Route>
-         <Route path="/formview" element={<Formview/>}></Route>
-         <Route path="/formedit/:id" element={<Formedit/>}></Route>
-
-       </Routes>
-       
-     </BrowserRouter>
-     </Provider>
-     {/* <Formhome></Formhome> */}
-     {/* <Formview></Formview> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/main" element={<Main></Main>}></Route>
+          <Route path="/home" element={<Home></Home>}></Route>
+          <Route path="/about" element={<About></About>}></Route>
+          <Route path="/contact" element={<Contact></Contact>}></Route>
+          <Route path="/movie" element={<Movie></Movie>}></Route>
+          <Route path="/movied/:id" element={<Movied></Movied>}></Route>
+          <Route path="/wheather" element={<Wheather></Wheather>}></Route>
+          <Route path="/formset" element={<Formset></Formset>}></Route>
+          <Route path="/formdata" element={<Foorm />}></Route>
+          <Route path="/homecart" element={<Homecart />}></Route>
+          <Route path="/add" element={<Addtocart />}></Route>
+          <Route path="/formhome" element={<Formhome />}></Route>
+          <Route path="/formview" element={<Formview />}></Route>
+          <Route path="/formedit/:id" element={<Formedit />}></Route>
+          <Route path="/formlogin" element={<Formlogin />}></Route>
+          <Route path="/formpro" element={<Formprofile />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+    {/* <Formhome></Formhome> */}
+    {/* <Formview></Formview> */}
   </React.StrictMode>
 );
 

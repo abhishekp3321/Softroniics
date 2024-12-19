@@ -4,32 +4,26 @@ import { useParams } from 'react-router-dom'
 
 export const Formedit = () => {
     const { id } = useParams();
+
     console.log("ID from URL:", id);
 
-    // State to store all user data and the specific user being edited
-    const [viewdata, setviewdata] = useState([]);
-    const [edituserdata, setedituserdata] = useState({});
+    const [viewdata, setviewdata] = useState('');
+    const [edituserdata, setedituserdata] = useState('');
 
-    // Fetch data from the API
+
     const fetchdata = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/user/view`);
-            setviewdata(Array.isArray(response.data) ? response.data : []);
-            console.log("viewapidata", response.data);
+            const respones = await axios.get(`http://127.0.0.1:8000/user/view`)
+            setviewdata(respones.data)
+            console.log("viewdatastate", viewdata);
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error(error)
         }
+
     }
     useEffect(() => {
         fetchdata();
     }, []);
-
-    // Select user by id and populate form
-    useEffect(() => {
-        if (viewdata.length > 0) {
-            selectUserById(id);
-        }
-    }, [viewdata, id]);
 
     const selectUserById = (id) => {
         const selectedUser = viewdata.find(user => user._id === id);
@@ -37,33 +31,33 @@ export const Formedit = () => {
         console.log("edituserdata", selectedUser);
     };
 
-    const edit = async (id) => {
+    useEffect(() => {
+        if (viewdata.length > 0) {
+            selectUserById(id);
+        }
+    }, [viewdata, id]);
+
+
+    
+    const handlechange = (event) => {
+        setedituserdata({ ...edituserdata, [event.target.name]: event.target.value });
+    }
+    
+    const edit = async (event) => {
+        event.preventDefault();
         try {
             await axios.put(`http://127.0.0.1:8000/user/update/${id}`, edituserdata);
-            fetchdata();
+            await fetchdata();
         } catch (error) {
+
             console.log("Error updating user:", error);
         }
     }
 
-    const handlechange = (event) => {
-        setedituserdata({ ...edituserdata, [event.target.name]: event.target.value });
-    }
-
-    const submit = async (event) => {
-        event.preventDefault();
-        try {
-            const response = await axios.post('http://127.0.0.1:8000/user/add', edituserdata);
-            console.log("Response after submission:", response);
-        } catch (error) {
-            console.error("Error adding user:", error);
-        }
-    }
-
     return (
-        <div className='flex justify-center items-center min-h-screen bg-blue-500'>
+        <div className='flex justify-center items-center min-h-screen  bg-gray-800'>
             <div className='bg-white py-8 px-28 rounded-lg shadow-lime-950'>
-                <form onSubmit={submit} className='flex flex-col gap-y-6'>
+                <form onSubmit={edit} className='flex flex-col gap-y-6'>
                     <div className='text-2xl font-medium text-center'>
                         Edit Data
                     </div>
@@ -104,4 +98,4 @@ export const Formedit = () => {
             </div>
         </div>
     )
-}
+}   

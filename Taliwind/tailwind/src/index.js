@@ -43,6 +43,11 @@ import { Formview } from "./Formview";
 import { Formedit } from "./Formedit";
 import { Formlogin } from "./Formlogin";
 import { Formprofile } from "./Formprofile";
+import Nodereg from "./Nodereg";
+import { Tasklogin } from "./Tasklogin";
+import { Taskadd } from "./Taskadd";
+import { Taskview } from "./Taskview";
+import { Taskreg } from "./Taskreg";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -66,6 +71,12 @@ root.render(
           <Route path="/formedit/:id" element={<Formedit />}></Route>
           <Route path="/formlogin" element={<Formlogin />}></Route>
           <Route path="/formpro" element={<Formprofile />}></Route>
+          <Route path="/formregister" element={<Nodereg/>}></Route>
+          <Route path="/tasklogin" element={<Tasklogin/>}></Route>
+          <Route path="/taskadd" element={<Taskadd/>}></Route>
+          <Route path="/taskview" element={<Taskview/>}></Route>
+          <Route path="/taskreg" element={<Taskreg/>}></Route>
+
         </Routes>
       </BrowserRouter>
     </Provider>

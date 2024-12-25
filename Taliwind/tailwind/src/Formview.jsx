@@ -7,11 +7,15 @@ export const Formview = () => {
 
     const fetchdata = async () => {
         try {
-            const respones = await axios.get(`http://127.0.0.1:8000/user/view`, viewdata)
+            const response = await axios.get(`http://127.0.0.1:8000/user/view`, viewdata)
             // console.log(respones);
-            setviewdata(respones.data)
+            setviewdata(response.data)
 
-
+            if (response.data) {
+                alert("user added")
+              } else {
+                alert('fill the form')
+              }
         } catch (error) {
             console.error(error)
 

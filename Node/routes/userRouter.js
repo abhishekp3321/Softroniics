@@ -1,4 +1,4 @@
-import { add, deletea, login, update, uploadd, view, viewprofile } from "../cotroller/uercontroller.js"
+import { add, deletea, login, register, update, uploadd, view, viewprofile } from "../cotroller/uercontroller.js"
 import express from 'express'
 import user from "../Models/user.js"
 import { fileupload } from "../Multer.js"
@@ -12,4 +12,5 @@ userRouter.delete('/delete/:id',deletea)
 userRouter.post('/login',login)
 userRouter.get('/viewprofile/:id',viewprofile)
 userRouter.post('/upload',fileupload.single("image"),uploadd)
+userRouter.post('/register',register)
 export default userRouter

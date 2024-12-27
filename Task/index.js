@@ -1,12 +1,17 @@
-import { connectDB } from "../Node/config/db.js";
+import { connectDB } from "../Task/config/db.js";
 import express from "express";
+import TaskRouter from "./router/TaskRouter.js";
+import cors from 'cors'
 
 const app = express();
+app.use(express.json());
 
-app.use(express.json);
+app.use(cors())
 
 connectDB();
 
+app.use('/task',TaskRouter)
+
 app.listen(9000, () => {
-  console.log("running");
+  console.log("running on 9000")
 });

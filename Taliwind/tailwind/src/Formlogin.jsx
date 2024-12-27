@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 export const Formlogin = () => {
     const navigate=useNavigate()
     const [data, setdata] = useState('')
+    
 
 const handlechange = (event) => {
   setdata({ ...data, [event.target.name]: event.target.value })

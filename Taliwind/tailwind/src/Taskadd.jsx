@@ -2,21 +2,21 @@ import axios from 'axios'
 import React, { useState } from 'react'
 
 export const Taskadd = () => {
-  const [data, setdata] = useState({})
+  const [data, setdata] = useState([])
 
-  const handlechange = (event) => {
+  const handleChange = (event) => {
     setdata({ ...data, [event.target.name]: event.target.value })
   }
   const submit = async (event) => {
     event.preventDefault()
     try {
-      const response = await axios.post('http://127.0.0.1:9000/Task/add', data);
+      const response = await axios.post('http://127.0.0.1:9000/task/add', data);
       console.log(response);
 
     }
     catch (error) {
       console.error(error);
-    }
+    } 
   }
 
   return (
@@ -30,7 +30,7 @@ export const Taskadd = () => {
             <div className='flex flex-col gap-y-6 '>
               <label className='text-xl font-medium  text-white'>Name</label>
               <input
-                onChange={handlechange}
+                onChange={handleChange}
                 type="text"
                 name="name"
                 id='name'
@@ -42,7 +42,7 @@ export const Taskadd = () => {
             <div className='flex flex-col gap-y-6 '>
               <label className='text-xl font-medium text-white'>Age</label>
               <input
-                onChange={handlechange}
+                onChange={handleChange}
                 type="text"
                 name="age"
                 id='age'
@@ -54,7 +54,7 @@ export const Taskadd = () => {
             <div className='flex flex-col gap-y-6 '>
               <label className='text-xl font-medium text-white'>Email</label>
               <input
-                onChange={handlechange}
+                onChange={handleChange}
                 type="text"
                 name="email"
                 id='email'
@@ -65,7 +65,7 @@ export const Taskadd = () => {
             <div className='flex flex-col gap-y-6 '>
               <label className='text-xl font-medium text-white'>password</label>
               <input
-                onChange={handlechange}
+                onChange={handleChange}
                 type="password"
                 name="password"
                 id='password'

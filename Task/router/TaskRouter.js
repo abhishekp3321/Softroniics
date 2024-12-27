@@ -1,8 +1,13 @@
 import express from 'express'
-import userRouter from '../../Node/routes/userRouter'
+
+import { add, dele, login } from '../conroller/Taskcontroller.js'
+import { view } from '../../Node/cotroller/uercontroller.js'
 
 const TaskRouter=express.Router()
-userRouter.post('/add',add)
 
+TaskRouter.post('/add',add)
+TaskRouter.post('/login',login)
+TaskRouter.get('/view',view)
+TaskRouter.delete('/delete/:id',dele)
 
 export default TaskRouter

@@ -47,7 +47,7 @@ import Nodereg from "./Nodereg";
 import { Tasklogin } from "./Tasklogin";
 import { Taskadd } from "./Taskadd";
 import { Taskview } from "./Taskview";
-import { Taskreg } from "./Taskreg";
+import Formreg from "./Formreg";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -75,7 +75,7 @@ root.render(
           <Route path="/tasklogin" element={<Tasklogin/>}></Route>
           <Route path="/taskadd" element={<Taskadd/>}></Route>
           <Route path="/taskview" element={<Taskview/>}></Route>
-          <Route path="/taskreg" element={<Taskreg/>}></Route>
+          <Route path="/formreg" element={<Formreg/>}></Route>
 
         </Routes>
       </BrowserRouter>

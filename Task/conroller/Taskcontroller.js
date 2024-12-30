@@ -45,4 +45,18 @@ const dele =async(req,res)=>{
   let response=await task.findByIdAndDelete(id);
   res.json(response);
 }
-export { add,login,view,dele };
+const register = async (req, res) => {
+  try {
+    let HASHpassword = await bcrpt.hash(req.body.password, 10);
+    console.log(HASHpassword);
+    let newtask = new task(req.body);
+    newtask.password = HASHpassword;
+    let response = await newtask.save();
+    res.json(response);
+    console.log(response);
+    
+  } catch (error) {
+    console.log(error);
+  }
+};
+export { add,login,view,dele,register };

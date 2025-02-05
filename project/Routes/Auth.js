@@ -1,5 +1,7 @@
 import express from 'express';
-import { initial } from '../controlller/Authcontrol';
+import { initial, login, register } from '../controlller/Authcontrol.js';
 const router = express.Router();
 router.route('/initial').get(initial)
-module.exports=router
+router.route('/register').post(register)
+router.route('/login').post(login)
+export default router

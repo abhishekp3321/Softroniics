@@ -1,7 +1,19 @@
-const express = require('express');
-const { initial } = require('./controlller/Authcontrol');
+import express from 'express';
+import 'dotenv/config';
+import authRoutes from './Routes/Auth.js';
+import { connectDB } from './utilis/db.js';
+import cors from 'cors';
 const app = express();
-app.use('/Auth',initial)
-app.listen(7000, () => {
-  console.log('server 7000 started');
-});
+
+app.use(express.json());
+app.use(cors());
+app.use('/Auth',authRoutes)
+const PORT = process.env.PORT || 5000;
+connectDB().then(()=>{
+  app.listen(PORT, () => {
+    console.log('server started'+ PORT);
+  });
+}
+)
+
+

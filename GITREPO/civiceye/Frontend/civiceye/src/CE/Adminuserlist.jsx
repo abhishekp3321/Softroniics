@@ -11,7 +11,7 @@ export const Adminuserlist = () => {
             <div className="flex m-10 justify-center items-center"><img
                                         src={celogofull}
                                         width="250"
-                                        height="80"
+                                          height="80"
                                         title="Flipkart"
                                     /></div>
                 <div className="space-y-7 py-10">

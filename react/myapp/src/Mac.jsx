@@ -23,7 +23,7 @@ export const Mac = () => {
                     </div>
                 </div>  
             </div>
-            <div className='image mt-5 mb-5 pt-5 pb-5 me-5 col mb-2'>
+            <div className='image mt-5 mb-5 pt-5 pb-5 me-5 col '>
                 <img src={mac} className="img-fluid rounded float-start" style={{ height: '400px', width: '700px' }} />
             </div>
         </div>

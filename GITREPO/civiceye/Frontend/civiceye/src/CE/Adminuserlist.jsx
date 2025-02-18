@@ -40,50 +40,36 @@ export const Adminuserlist = () => {
                 </button>
             </div>
 
-            <div className="bg-[#e6f8ff]  rounded-lg w-full p-12  m-10">
-               <div className="bg-white flex flex-wrap gap-x-44 p-5 shadow-2xl mt-10 justify-center items-center w-full">
-                <div className="text-2xl font-bold">Name</div>
-                <div className="text-2xl font-bold">Email</div>
-                <div className="text-2xl font-bold">Phone</div>
-                <div className="text-2xl font-bold">Address</div>
-                <div className="text-2xl font-bold">ID Proof</div>
-                <div className="text-2xl font-bold">Reports</div>
+            <div className="bg-[#e6f8ff] rounded-lg w-full p-12 m-10">
+    <div className="overflow-x-auto">
+        <table className="min-w-full bg-white  rounded-lg">
+            <thead className="bg-gray-100 shadow-xl">
+                <tr className="">
+                    <th className="p-5 text-2xl font-medium text-black">Name</th>
+                    <th className="p-5 text-2xl font-medium text-black">Email</th>
+                    <th className="p-5 text-2xl font-medium text-black">Phone</th>
+                    <th className="p-5 text-2xl font-medium text-black">Address</th>
+                    <th className="p-5 text-2xl font-medium text-black">ID Proof</th>
+                    <th className="p-5 text-2xl font-medium text-black">Reports</th>
+                </tr>
+            </thead>
+            <tbody>
+                {[...Array(10)].map((_, index) => (
+                    <tr key={index} className={index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#f9fafb]"}>
+                        <td className="p-5 text-center">nndn</td>
+                        <td className="p-5 text-center">nndn</td>
+                        <td className="p-5 text-center">nndn</td>
+                        <td className="p-5 text-center">nndn</td>
+                        <td className="p-5 text-center">nndn</td>
+                        <td className="p-5 text-center">nndn</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-               </div>
-               <div className=" mt-1 ">
-               <div className="bg-[#ffffff] w-full  p-5">
-                nndn
-               </div>
-               <div className="bg-[#f9fafb] w-full p-5">
-                nndn
-               </div>
-               <div className="bg-[#ffffff] w-full  p-5">
-                nndn
-               </div>
-               <div className="bg-[#f9fafb] w-full p-5">
-                nndn
-               </div>
-               <div className="bg-[#ffffff] w-full  p-5">
-                nndn
-               </div>
-               <div className="bg-[#f9fafb] w-full p-5">
-                nndn
-               </div>
-               <div className="bg-[#ffffff] w-full  p-5">
-                nndn
-               </div>
-               <div className="bg-[#f9fafb] w-full p-5">
-                nndn
-               </div>
-               <div className="bg-[#ffffff] w-full  p-5">
-                nndn
-               </div>
-               <div className="bg-[#f9fafb] w-full p-5">
-                nndn
-               </div>
-               
             </div>
-            </div>
-        </div>
+        
     );
 };

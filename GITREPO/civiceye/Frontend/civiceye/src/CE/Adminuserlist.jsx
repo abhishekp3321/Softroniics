@@ -41,6 +41,7 @@ export const Adminuserlist = () => {
             </div>
 
             <div className="bg-[#e6f8ff] rounded-lg w-full p-12 m-10">
+                
     <div className="overflow-x-auto">
         <table className="min-w-full bg-white  rounded-lg">
             <thead className="bg-gray-100 shadow-xl">
@@ -54,17 +55,25 @@ export const Adminuserlist = () => {
                 </tr>
             </thead>
             <tbody>
-                {[...Array(10)].map((_, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#f9fafb]"}>
-                        <td className="p-5 text-center">nndn</td>
-                        <td className="p-5 text-center">nndn</td>
-                        <td className="p-5 text-center">nndn</td>
-                        <td className="p-5 text-center">nndn</td>
-                        <td className="p-5 text-center">nndn</td>
-                        <td className="p-5 text-center">nndn</td>
-                    </tr>
-                ))}
-            </tbody>
+    <tr className="bg-[#ffffff]">
+        <td className="p-5 text-center">Abhishek</td>
+        <td className="p-5 text-center">abhi@mail.com</td>
+        <td className="p-5 text-center">935848145</td>
+        <td className="p-5 text-center">calicut</td>
+        <td className="p-5 text-center">Addar</td>
+        <td className="p-5 text-center">5</td>
+    </tr>
+    <tr className="bg-[#f9fafb]">
+    <td className="p-5 text-center">Abhishek</td>
+        <td className="p-5 text-center">abhi@mail.com</td>
+        <td className="p-5 text-center">935848145</td>
+        <td className="p-5 text-center">calicut</td>
+        <td className="p-5 text-center">Addar</td>
+        <td className="p-5 text-center">1</td>
+    </tr>
+ 
+</tbody>
+
         </table>
     </div>
 </div>

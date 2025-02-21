@@ -19,7 +19,7 @@ try {
         alert('login Succesful')
       }else{
         alert('invalid respones from server')
-      }
+      } 
 } catch (error) {
     console.log (error)
 }

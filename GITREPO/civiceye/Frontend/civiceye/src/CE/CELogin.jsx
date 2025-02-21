@@ -1,25 +1,34 @@
 import React, { useState } from 'react'
 import celogofull from '../assets/celogofull.png'
-import { Link } from "react-router-dom";
-
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 export const CELogin = () => {
 
 
-    const [logindata, setlogindata] = useState('')
+    const [data, setdata] = useState('')
+    const Navigate= useNavigate()
 
     const change = (event) => {
-        setlogindata({ ...logindata, [event.target.name]: event.target.value })
+        setdata({ ...data, [event.target.name]: event.target.value })
     }
 
     const submit = async (event) => {
         event.preventDefault()
         try {
-            console.table(logindata)
+            const response = await axios.post('http://127.0.0.1:6900/user/signin',data)
+            if(response.data){
+                localStorage.setItem('id',response.data._id)
+                localStorage.setItem('email',response.data.email)
+                alert('login Succesful')
+                Navigate    ('/reghome')
+              }else{
+                alert('invalid respones from server')
+              }
         }
         catch (error) {
-            console.log("CL", error);
+            console.log( error);
         }
     }
     return (

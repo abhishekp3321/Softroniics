@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import celogofull from '../assets/celogofull.png'
 import { Link } from "react-router-dom";
+import axios from 'axios'
 export const Signup = () => {
 
-  const [signindata, setsignindata] = useState('')
+  const [data, setdata] = useState('')
 
   const change = (event) => {
-    setsignindata({ ...signindata, [event.target.name]: event.target.value })
+    setdata({ ...data, [event.target.name]: event.target.value })
   }
 
   const submit = async (event) => {
     event.preventDefault()
     try {
-      console.table(signindata)
+      const response = await axios.post('http://127.0.0.1:6900/user/signup', data);
+      console.log(response);
     }
     catch (error) {
       console.log("CL", error);
@@ -51,12 +53,13 @@ export const Signup = () => {
             SIGN <span className="text-blue-500">UP</span>
           </h2>
 
-          <form className="space-y-4">
+          <form onSubmit={submit} className="space-y-4">
             <div>
               <label htmlFor="username" className="block text-gray-700 text-sm font-medium mb-2">
                 Username
               </label>
               <input
+                onChange={change}
                 id="username"
                 name="username"
                 type="text"
@@ -71,8 +74,10 @@ export const Signup = () => {
                 Mobile Number
               </label>
               <input
-                id="mobile"
-                name="mobile"
+                onChange={change}
+
+                id="number"
+                name="number"
                 type="tel"
                 placeholder="Mobile Number"
                 className="w-full px-4 py-2 border border-gray-700 rounded-lg bg-white placeholder-gray-500 
@@ -85,6 +90,8 @@ export const Signup = () => {
                 DOB
               </label>
               <input
+                onChange={change}
+
                 id="dob"
                 name="dob"
                 type="date"
@@ -115,6 +122,8 @@ export const Signup = () => {
                 Password
               </label>
               <input
+                onChange={change}
+
                 id="password"
                 name="password"
                 type="password"

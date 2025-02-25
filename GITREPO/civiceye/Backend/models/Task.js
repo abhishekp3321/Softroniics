@@ -21,6 +21,12 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+   address: {
+        type: String,
+        required: true
+    },
+   
+    
 })
 const task = mongoose.model('task', taskSchema)
 export default task;

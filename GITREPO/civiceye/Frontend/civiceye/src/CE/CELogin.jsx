@@ -17,10 +17,10 @@ export const CELogin = () => {
     const submit = async (event) => {
         event.preventDefault()
         try {
-            const response = await axios.post('http://127.0.0.1:6900/user/signin',data)
+            const response = await axios.post('http://127.0.0.1:6262/user/signin',data)
             if(response.data){
-                localStorage.setItem('id',response.data._id)
-                localStorage.setItem('email',response.data.email)
+                localStorage.setItem('id',response.data.userId)
+                localStorage.setItem('token',response.data.token)
                 alert('login Succesful')
                 Navigate    ('/reghome')
               }else{

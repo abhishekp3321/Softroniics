@@ -14,6 +14,8 @@ import { Admincom } from './CE/Admincom.jsx'
 import { Complaint } from './CE/Complaint.jsx'
 import { Reghome } from './CE/Reghome.jsx'
 import { Homeguest } from './CE/homeguest.jsx'
+import { CEComplaintRegisterPopup } from './CE/CEComplaintRegisterPopup.jsx'
+import { CEUserHomePage } from './CE/CEUserHomePage.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
 
@@ -31,6 +33,9 @@ createRoot(document.getElementById('root')).render(
 <Route path='/complaint' element={<Complaint/>}/>
 <Route path='/reghome' element={<Reghome/>}/>
 <Route path='/homeguest' element={<Homeguest/>}/>
+<Route path='/m1' element={<CEComplaintRegisterPopup/>}/>
+<Route path='/m2' element={<CEUserHomePage/>}/>
+
       </Routes>
     </BrowserRouter>
 

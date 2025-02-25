@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, Links } from "react-router-dom";
 export const Complaint = () => {
     return (
         <div class="flex items-center justify-center min-h-screen bg-white">
@@ -21,8 +22,14 @@ export const Complaint = () => {
                 class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
               >
                 <option>Select complaint type</option>
-                <option>Type 1</option>
-                <option>Type 2</option>
+                        <option>Waste Dumping</option>
+                        <option>Public Nuisance</option>
+                        <option>Traffic Violations</option>
+                        <option>Water Leakage</option>
+                        <option>Power Outage</option>
+                        <option>Noise Complaint</option>
+                        <option>Road Damage</option>
+                        <option>Other</option>
               </select>
             </div>
             <div class="mb-4">
@@ -48,12 +55,12 @@ export const Complaint = () => {
               >
                 Submit
               </button>
-              <button
-                type="button"
-                class="w-[48%] px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
-              >
-                Cancel
-              </button>
+              <Link
+              to="/reghome"
+              className="w-[48%] px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none text-center flex items-center justify-center"
+            >
+              Cancel
+            </Link>
             </div>
           </form>
         </div>

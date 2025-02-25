@@ -1,24 +1,46 @@
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useState } from 'react';
+import { data } from 'react-router-dom';
 
 export const CEUserProfile = () => {
-
     const formDataState = {
-        fullName: "Karthik km",
-        mobileNumber: "773778025",
-        email: "karthik@gmail.com",
-        dob: "2003-10-01",
-        password: "password",
+        username: "",
+        number: "",
+        email: "",
+        dob: "",
+        password: "",
         state: "",
-        address: "chimbuveetilmon cheekilode po",
+        address: "",
         idProof: "",
-        idProofNumber: "123456789",
+        idProofNumber: "",
     };
 
     const [formData, setFormData] = useState(formDataState);
-
+const userid=localStorage.getItem('id')
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.put(
+                `http://127.0.0.1:6262/user/update/${userid}`,formData);
+                console.log("Response:", response.data);
+            console.log("User updated successfully!", response.data);
+            alert("User updated successfully!");
+        } catch (error) {                            
+            console.error("Error updating user:", error);
+            alert("Failed to update user.");
+        }
+    };
+    
+    const districts = [
+        "Alappuzha", "Ernakulam", "Idukki", "Kannur", "Kasargod", "Kollam",
+        "Kottayam", "Kozhikode", "Malappuram", "Palakkad", "Pathanamthitta",
+        "Thiruvananthapuram", "Thrissur", "Wayanad"
+    ];
+
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-2xl shadow-lg w-[80%] max-w-4xl">
@@ -31,46 +53,24 @@ export const CEUserProfile = () => {
                     <div className="flex flex-col items-start text-left">
                         <label className="block text-sm font-medium text-gray-700">Full Name</label>
                         <input
+                            id="username"
+                            name="username"
                             type="text"
-                            name="fullName"
-                            value={formData.fullName}
+                            value={formData.username}
                             onChange={handleChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
-                    <div className="flex flex-col items-start text-left">
-                        <label className="block text-sm font-medium text-gray-700">State</label>
-                        <select
-                            name="state"
-                            value={formData.state}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded-md bg-white cursor-pointer"
-                        >
-                            <option value="">Select District</option>
-                            <option value="Kasargod">Kasargod</option>
-                            <option value="Kannur">Kannur</option>
-                            <option value="Wayanad">Wayanad</option>
-                            <option value="Kozhikode">Kozhikode</option>
-                            <option value="Malappuram">Malappuram</option>
-                            <option value="Palakkad">Palakkad</option>
-                            <option value="Thrissur">Thrissur</option>
-                            <option value="Ernakulam">Ernakulam</option>
-                            <option value="Idukki">Idukki</option>
-                            <option value="Kottayam">Kottayam</option>
-                            <option value="Alappuzha">Alappuzha</option>
-                            <option value="Pathanamthitta">Pathanamthitta</option>
-                            <option value="Kollam">Kollam</option>
-                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
-                        </select>
-                    </div>
+                  
 
                     <div className="flex flex-col items-start text-left">
                         <label className="block text-sm font-medium text-gray-700">Mobile Number</label>
                         <input
-                            type="text"
-                            name="mobileNumber"
-                            value={formData.mobileNumber}
+                            id="number"
+                            name="number"
+                            type="tel"
+                            value={formData.number}
                             onChange={handleChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -81,6 +81,7 @@ export const CEUserProfile = () => {
                         <input
                             type="text"
                             name="address"
+                            id="address"
                             value={formData.address}
                             onChange={handleChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -90,56 +91,37 @@ export const CEUserProfile = () => {
                     <div className="flex flex-col items-start text-left">
                         <label className="block text-sm font-medium text-gray-700">Email ID</label>
                         <input
-                            type="email"
+                            id="email"
                             name="email"
+                            type="email"
                             value={formData.email}
                             onChange={handleChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
-                    <div className="flex flex-col items-start text-left">
-                        <label className="block text-sm font-medium text-gray-700">ID Proof</label>
-                        <select
-                            name="idProof"
-                            value={formData.idProof}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded-md bg-white cursor-pointer"
-                        >
-                            <option value="">Select ID Proof</option>
-                            <option value="Aadhaar">Aadhaar</option>
-                            <option value="Drivers licence">Driving Licence</option>
-                            <option value="PAN Card">PAN Card</option>
-                        </select>
-                    </div>
+                  
 
                     <div className="flex flex-col items-start text-left">
                         <label className="block text-sm font-medium text-gray-700">D.O.B</label>
                         <input
-                            type="date"
+                            id="dob"
                             name="dob"
+                            type="date"
                             value={formData.dob}
                             onChange={handleChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
-                    <div className="flex flex-col items-start text-left">
-                        <label className="block text-sm font-medium text-gray-700">ID Proof Number</label>
-                        <input
-                            type="text"
-                            name="idProofNumber"
-                            value={formData.idProofNumber}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
+                 
 
                     <div className="flex flex-col items-start text-left">
                         <label className="block text-sm font-medium text-gray-700">Password</label>
                         <input
-                            type="password"
+                            id="password"
                             name="password"
+                            type="password"
                             value={formData.password}
                             onChange={handleChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -148,17 +130,13 @@ export const CEUserProfile = () => {
                 </div>
 
                 <div className="flex justify-center gap-4 mt-6">
-                    <button className="bg-blue-500 text-white px-6 py-2 rounded-2xl hover:bg-blue-600 transition duration-200">
-                        EDIT
-                    </button>
-                    <button className="bg-blue-500 text-white px-6 py-2 rounded-2xl hover:bg-blue-600 transition duration-200">
+                    <button onClick={handleSubmit} className="bg-blue-500 text-white px-6 py-2 rounded-2xl hover:bg-blue-600 transition duration-200">
                         SUBMIT
                     </button>
                 </div>
             </div>
         </div>
-
-    )
-}
+    );
+};
 
 export default CEUserProfile;

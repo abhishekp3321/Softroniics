@@ -19,7 +19,7 @@ export const CEUserProfile = () => {
 const userid=localStorage.getItem('id')
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    };  
 
     const handleSubmit = async (event) => {
         event.preventDefault();

@@ -19,6 +19,8 @@ import mail from "../assets/mail.png";
 import celogofull from "../assets/celogofull.png";
 import male from "../assets/male.png";
 import call from "../assets/call.png";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export const Reghome = () => {
   const [popup, setPopup] = useState(false);
@@ -26,6 +28,27 @@ export const Reghome = () => {
   const dropdownRef = useRef(null);
   const contactRef = useRef(null);
   const aboutRef = useRef(null);  
+  const deleteaccount = async () => {
+    try {
+      if (!userid) {
+        toast.error("User ID not found.");
+        return; 
+      }
+  
+      let response = await axios.delete(`http://127.0.0.1:6262/user/delete/${userid}`);
+      console.log(response.data);
+  
+      toast.success("Account deleted successfully");
+      localStorage.clear();
+  
+      setTimeout(() => {
+        navigate("/homeguest");
+      }, 1000);
+    } catch (error) {
+      console.log("Error deleting account:", error);
+      toast.error(error.response?.data?.message || "Failed to delete account");
+    }
+  };
 
   const scrollToContact = (e) => {
     e.preventDefault();
@@ -100,29 +123,34 @@ export const Reghome = () => {
             </button>
 
             {dropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border border-gray-200 py-2 z-50">
-                <Link
-                  to="/userprofile"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  onClick={() => setDropdown(false)}
-                >
-                  Profile
-                </Link>
-                <Link
-                  to="/"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  onClick={() => setDropdown(false)}
-                >
-                  Delete Account
-                </Link>
-                <Link
-                  to="/"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  onClick={() => setDropdown(false)}
-                >
-                  Logout
-                </Link>
-              </div>
+
+           <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border border-gray-200 py-2 z-50">
+             <Link to="/userprofile" onClick={() => setDropdown(false)}>
+               <button  className="block w-full text-left px-4 py-2 text-gray-700">
+                 Profile
+               </button>
+             </Link>
+           
+             <button
+  className="block w-full text-left px-4 py-2 text-red-600"
+  onClick={() => {
+    if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+      deleteaccount(); // Call the function to handle account deletion
+    }
+    setDropdown(false);
+  }}
+>
+  Delete Account
+</button>
+
+           
+             <Link to="/" onClick={() => setDropdown(false)}>
+               <button className="block w-full text-left px-4 py-2 text-gray-700">
+                 Logout
+               </button>
+             </Link>
+           </div>
+           
             )}
           </div>
         </div>

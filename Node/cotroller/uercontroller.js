@@ -58,7 +58,7 @@ const uploadd = async (req, res) => {
     const uploadfile = new user({ ...req.body, image: path });
     const uploadedfile = await uploadfile.save();
     res.json(uploadedfile);
-  } catch (error) {
+  } catch (error) { 
     console.log(error);
     res.json(error.message);
   }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function swapArrays(arr1, arr2) {
+            if (arr1.length !== arr2.length) {
+            console.log("Arrays must be of the same length to swap.");
+            return;
+            }
+            for (let i = 0; i < arr1.length; i++) {
+            let temp = arr1[i];
+            arr1[i] = arr2[i];
+            arr2[i] = temp;
+            }
+        }
+
+        let size = parseInt(prompt("Enter the size of arrays"));
+        let array1 = [];
+        let array2 = [];
+
+        console.log("Enter the values of Array 1");
+        for (let i = 0; i < size; i++) {
+            array1.push(parseInt(prompt(`Enter value ${i + 1} for Array 1`)));
+        }
+
+        console.log("Enter the values of Array 2");
+        for (let i = 0; i < size; i++) {
+            array2.push(parseInt(prompt(`Enter value ${i + 1} for Array 2`)));
+        }
+
+        console.log("Arrays before swapping:");
+        console.log("Array1:", array1);
+        console.log("Array2:", array2);
+
+        swapArrays(array1, array2);
+
+        console.log("Arrays after swapping:");
+        console.log("Array1:", array1);
+        console.log("Array2:", array2);
+    </script>
+</body>
+</html>

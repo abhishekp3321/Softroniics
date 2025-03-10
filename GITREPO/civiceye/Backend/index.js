@@ -1,15 +1,23 @@
 import express from "express";
 import { connectDB } from "./config/Db.js";
 import 'dotenv/config';
+import path from "path";
 import userrouter from "./router/router.js";
 import cors from 'cors';
+import comrouter from "./router/comrouter.js";
+
 const PORT = process.env.PORT || 6901;
-connectDB();
 const app = express();
+// app.use("/uploads", express.static(path.resolve("uploads")));
+
 app.use(express.json());
 app.use(cors())
 
+app.use('/proofs', express.static('proofs'));
 app.use('/user', userrouter)
+app.use('/proof', comrouter)
+
+
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log('server started ' + PORT);

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Table</title>
+</head>
+<body>
+
+    <label for="num">Enter a number:</label>
+    <input type="text" id="num" maxlength="10">
+    <button onclick="display()">Submit</button>
+    
+    <h3>Multiplication Table:</h3>
+    <p id="output"></p>
+
+    <script>
+        function display() {
+            let num = parseFloat(prompt("Enter a number:"));
+            let outputElement = (prompt("output"));
+
+            // Validate input
+            if (isNaN(num)) {
+                outputElement.innerHTML = "Please enter a valid number.";
+                return;
+            }
+
+            let out = "";
+            for (let i = 1; i <= 10; i++) {
+                out += `${num} x ${i} = ${num * i} <br>`;
+            }
+
+            
+            outputElement.innerHTML = out;
+        }
+    </script>
+
+</body>
+</html>

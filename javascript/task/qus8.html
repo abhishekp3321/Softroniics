@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Sum of Odd Numbers</h1>
+    <label for="limit">Enter a limit:</label>
+    <input type="number" id="limit" name="limit">
+    <button onclick="calculateSum()">Calculate</button>
+    <p id="result"></p>
+
+    <script>
+    function calculateSum() {
+        const limit = parseInt(prompt("Enter a limit:"));
+        let sum = 0;
+        for (let i = 1; i <= limit; i += 2) {
+            sum += i;
+        }
+        console.log("Sum of odd numbers up to " + limit + " is: " + sum);
+    }
+    </script>
+</body>
+</html>

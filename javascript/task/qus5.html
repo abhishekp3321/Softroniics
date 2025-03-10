@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="mark" maxlength="10">
+    <button onclick="checkPassFail()">Submit</button>
+    <script>
+           function checkPassFail() {
+            let mark = parseFloat(prompt("Enter your mark:"));
+            if (mark >= 90) {
+                alert("A");
+            } else if (mark >= 80) {
+                alert("B");
+            } else if (mark >= 70) {
+                alert("C");
+            } else if (mark >= 60) {
+                alert("D");
+            } else if (mark >= 50) {
+                alert("E");
+            } else {
+                alert("F");
+            }
+        }
+    </script>
+</body>
+</html>

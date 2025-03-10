@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import celogofull from '../assets/celogofull.png';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-export const Signup = () => {
+export const Signup = () => { 
   const [data, setdata] = useState({});
+  const Navigate = useNavigate()
+
 
   const change = (event) => {
     setdata({ ...data, [event.target.name]: event.target.value });
@@ -15,7 +17,15 @@ export const Signup = () => {
     console.log("Submitting Data:", data);
     try {
       const response = await axios.post('http://127.0.0.1:6262/user/signup', data);
-      console.log("Response:", response.data);
+      if (response.data) {
+        console.log("Signup Response:", response);
+        localStorage.setItem('id', response.data.userId)
+        localStorage.setItem('token', response.data.token)
+        alert('login Succesful')
+        Navigate('/reghome')
+      } else {
+        alert('invalid respones from server')
+      }
     } catch (error) {
       console.error("Signup Error:", error.response?.data || error.message);
     }

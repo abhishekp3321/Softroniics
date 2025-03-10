@@ -1,0 +1,26 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+    p: <input type="text" id="p" maxlength="10"> <br><br>
+        r:<input type="text" id="r" maxlength="10"> <br><br>
+        y:<input type="text" id="y" maxlength="10">
+        <button onclick="display()">Submit</button>
+        <script>
+            function display() {
+            
+            }
+
+            const p = parseInt(prompt("Enter the principal amount (P):"));
+            const r = parseFloat(prompt("Enter the interest rate (R):"));
+            const y = parseFloat(prompt("Enter the number of years (n):"));
+    let interest = (p * r * y) / 100;
+    console.log(interest);
+        
+        </script>
+    </body>
+    </html>

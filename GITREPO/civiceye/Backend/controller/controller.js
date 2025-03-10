@@ -2,6 +2,7 @@ import bcrypt from "bcrypt"
 import 'dotenv/config';
 import jwt from 'jsonwebtoken'
 import task from '../models/Task.js'
+import mongoose from "mongoose";
 
 export const signup = async (req, res) => {
   try {
@@ -37,10 +38,10 @@ export const signin = async (req, res) => {
       return res.status(401).json({ message: 'invalid password' })
     }
     const token = jwt.sign({ userId: User._id, email: User.email }, process.env.KEY, { expiresIn: '1h' })
-    return res.status(200).json({ message: 'login success', token, userId: User._id })
+    return res.status(200).json({ message: 'login success', token, userId: User._id, role: User.role })
 
   } catch (error) {
-    console.log(error); 
+    console.log(error);
 
     res.status(500).json({ message: 'server error', error: error });
   }
@@ -65,23 +66,49 @@ export const update = async (req, res) => {
     res.json(updateduser);
   } catch (error) {
     console.log("error", error);
-    
+
     res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
-export const deleteuser = async(req, res)=> {
+export const deleteuser = async (req, res) => {
   const id = req.params.id;
 
   try {
-      const response = await task.findByIdAndDelete(id);
-      if (!response) {
-          return res.status(404).json({ message: "User Not Found" });
-      }
-      return res.status(200).json({ message: "User AcountDeleted" });
+    const response = await task.findByIdAndDelete(id);
+    if (!response) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
+    return res.status(200).json({ message: "User AcountDeleted" });
   }
   catch (error) {
-      console.error("Internal Server Error", error);
-      return res.status(500).json({ message: "Internal Server Error" });
+    console.error("Internal Server Error", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 
+};
+export const admin = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      return res.status(400).json({ message: "admin Id not provided" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid admin Id" });
+    }
+    const admin = await task.findById(id);
+    if (!admin) {
+      return res.status(403).json({ message: "admin not found" });
+    }
+    const users = await task.find();
+    return res.status(200).json({
+      message: users.length > 0 ? "Users retrieved successfully" : "No users found",
+      users,
+    });
+
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'server error', error: error });
+  }
 };

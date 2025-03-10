@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import celogofull from '../assets/celogofull.png'
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from 'react-hot-toast';
 
 
 export const CELogin = () => {
@@ -19,20 +20,24 @@ export const CELogin = () => {
         try {
             const response = await axios.post('http://127.0.0.1:6262/user/signin',data)
             if(response.data){
+                console.log(response.data)
                 localStorage.setItem('id',response.data.userId)
                 localStorage.setItem('token',response.data.token)
+                toast.success(response.data.message)
                 alert('login Succesful')
-                Navigate    ('/reghome')
-              }else{
-                alert('invalid respones from server')
+              if(response.data.role==='admin'){
+                Navigate('/admin')
               }
-        }
-        catch (error) {
+                else if(response.data.role==='user'){
+                    Navigate('/reghome')
+                }
+            }
+        } catch (error) {
             console.log( error);
         }
     }
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100 px-10">
+<div className="relative flex justify-center items-center h-screen px-10">
 
             {/* the box  */}
             <div className="bg-white flex flex-col md:flex-row w-7xl shadow-lg rounded-lg py-10 px-4 md:py-20 md:px-0">

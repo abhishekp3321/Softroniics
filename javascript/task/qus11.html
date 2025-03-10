@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Find Even Numbers</title>
+</head>
+<body>
+    <button onclick="findEvenNumbers()">Find Even Numbers</button>
+    <p id="result"></p>
+
+    <script>
+        function findEvenNumbers() {
+            let size = parseInt(prompt("Enter the size of the array:"));
+            let array = [];
+            let evenCount = 0;
+
+            for (let i = 0; i < size; i++) {
+                let value = parseInt(prompt("Enter the value of array element " + (i + 1) + ":"));
+                array.push(value);
+            }
+
+            for (let i = 0; i < array.length; i++) {
+                if (array[i] % 2 === 0) {
+                    evenCount++;
+                    console.log(array[i] + " is even");
+                } else {
+                    console.log(array[i] + " is odd");
+                }
+            }
+
+            if (evenCount === 0) {
+                document.getElementById("result").textContent = "There are no even numbers in the array";
+                console.log("There are no even numbers in the array");
+            } else {
+                document.getElementById("result").textContent = "Number of even numbers: " + evenCount;
+                console.log("Number of even numbers: " + evenCount);
+            }
+        }
+    </script>
+</body>
+</html>

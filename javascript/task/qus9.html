@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Pattern</title>
+</head>
+<body>
+
+    <label for="num">Enter a number:</label>
+    <input type="text" id="num" maxlength="10">
+    <button onclick="display()">Submit</button>
+
+    <script>
+        function display() {
+            let num = 5; // Get user input
+
+            for (let i = 1; i <= num; i++){
+                let rowPattern = ""; 
+
+                for (let j = 1; j <= i; j++) { 
+                    rowPattern += j + " ";
+                }
+
+                console.log(rowPattern); 
+            }
+        }
+    </script>
+
+</body>
+</html>

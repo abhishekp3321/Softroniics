@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sort Array Descending</title>
+</head>
+<body>
+
+<button onclick="sortDescending()">Sort Descending</button>
+<p id="result"></p>
+<script>
+function sortDescending() {
+  let size = parseInt(prompt("Enter the size of an array:"));
+  let array = [];
+
+  for (let i = 0; i < size; i++) {
+    let value = parseInt(prompt("Enter the value of array element " + (i + 1) + ":"));
+    array.push(value);
+  }
+
+  array.sort(function(a, b) {
+    return b - a;
+  });
+
+  console.log("Sorted array:");
+  console.log(array.join(", "));
+
+}
+
+sortDescending();
+</script>
+
+</body>
+</html>

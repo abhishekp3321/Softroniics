@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import ComplaintModel from "../models/complaints.js";
-import complaint from "../models/complaints.js";
 import task from "../models/Task.js";
 
 export const registerComplaint = async (req, res) => {
@@ -43,10 +42,10 @@ export const getComplaints = async (req, res) => {
 
     // ✅ Find complaints by `userId`
     const complaints = await ComplaintModel.find({ userid: id });
-    const updatedComplaints = complaints.map((comp) => ({
-      ...comp._doc,
-      proof: comp.proof ? `http://127.0.0.1:6262/uploads/${comp.proof}` : null, 
-    }));
+    // const updatedComplaints = complaints.map((comp) => ({
+    //   ...comp._doc,
+    //   proof: comp.proof ? `http://127.0.0.1:6262/uploads/${comp.proof}` : null,
+    // }));
 
     if (!complaints.length) {
       return res.status(404).json({ message: "No complaints found" });
@@ -56,5 +55,62 @@ export const getComplaints = async (req, res) => {
   } catch (error) {
     console.error("Error fetching complaints:", error);
     return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
+
+
+export const getallcomplaints = async (req, res) => {
+  try {
+    const { id } = req.params; // Get the user ID from the request parameters
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "User Id not provided" });
+    }
+
+    const user = await task.findById(id); // Ensure this is the correct model
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.role !== "admin") {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    const complaints = await ComplaintModel.find();
+    if (!complaints.length) {
+      return res.status(404).json({ message: "No complaints found" });
+    }
+
+    return res.status(200).json(complaints); // ✅ Send response
+  } catch (error) {
+    console.error("Error fetching complaints:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const statusupdate = async (req, res) => {
+  
+  try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const selectedComplaint = await ComplaintModel.findById(id);
+      if (!selectedComplaint) {
+          return res.status(404).json({ message: "Complaint not found" });
+      }
+      if (status !== "Resolved" && status !== "Pending" && status !== "Rejected" && status !== "Approved") {
+          return res.status(400).json({ message: "Invalid status" });
+      }
+      selectedComplaint.status = status;
+      if (status === "Resolved") {
+          selectedComplaint.resolvedAt = new Date().toISOString();
+      } else {
+          selectedComplaint.resolvedAt = null;
+      }
+      await selectedComplaint.save();
+      return res.status(200).json({ message: "Complaint status updated", updatedComplaint: selectedComplaint });
+  } catch (error) {
+      console.error("Error updating complaint status:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
   }
 };

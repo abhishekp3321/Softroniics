@@ -1,84 +1,106 @@
-import React from "react";
-import celogofull from '../assets/celogofull.png'
-
-const users = [
-];
+import React, { useEffect, useState } from "react";
+import celogofull from '../assets/celogofull.png';
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 export const Adminuserlist = () => {
+   
+    const [loggedUserData, setLoggedUserData] = useState({}); // Loggedin user data
+    const [users, setUsers] = useState([]); // All users data list
+    const userid = localStorage.getItem('id'); // Get userId from localStorage
+    const navigate = useNavigate(); // Initialize useNavigate
+
+    const fetchLoggedUserData = async () => {
+        try {
+            if (!userid) return;
+            const response = await axios.get(`http://127.0.0.1:6262/user/view/${userid}`);
+            if (response) {
+                setLoggedUserData(response.data);
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    const fetchUserData = async () => {
+        try {
+            if (!userid) return;
+            const response = await axios.get(`http://127.0.0.1:6262/user/viewall/${userid}`);
+            if (response && response.data && response.data.users) {
+                setUsers(response.data.users);
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchLoggedUserData();
+        fetchUserData();
+    }, [userid]); // Add userId as a dependency
+
+    useEffect(() => {
+        if (loggedUserData.role === 'user') {
+            toast.error("You are not authorized to view this page.");
+        }
+    }, [loggedUserData, navigate]); // Add navigate as a dependency
+
     return (
-        <div className="flex w-full">
-            <div className="bg-white w-96 min-h-screen p-4 ">
-            <div className="flex m-10 justify-center items-center"><img
-                                        src={celogofull}
-                                        width="250"
-                                          height="80"
-                                        title="Flipkart"
-                                    /></div>
-                <div className="space-y-7 py-10">
-                   <button className="hover:bg-[#00b9ff] p-4 justify-start flex font-medium items-center text-2xl w-72 hover:text-white rounded-lg "> <li className="flex items-center gap-2 cursor-pointer  ">
-                        <span>📊</span> Overview
-                    </li>
-                    </button>
-                    <button className="hover:bg-[#00b9ff] p-4 justify-start flex font-medium   w-64 hover:text-white rounded-lg ">
-                    <li className="flex  gap-2   text-2xl  cursor-pointer">
-                        <span>⚖️</span> Complaints
-                    </li>
-                    </button>
-                    <button className="hover:bg-[#00b9ff] p-4 justify-start flex font-medium items-center text-2xl w-72 hover:text-white rounded-lg ">
-                    <li className="flex items-center gap-2 cursor-pointer  rounded-lg">
-                        <span>👤</span> User Management
-                    </li>
-                    </button>   
-                    <button className="hover:bg-[#00b9ff] p-4 justify-start flex font-medium items-center text-2xl w-72  hover:text-white rounded-lg ">
-                    <li className="flex items-center cursor-pointer gap-2 0">
-                        <span>📄</span> Reports
-                    </li>
-                    </button>
+        <div className="flex w-full h-screen bg-gray-900 text-white">
+                  <aside className="bg-gray-800 w-78 p-6 flex flex-col shadow-md">
+                               <div className="flex justify-center mb-10">
+                                   <img src={celogofull} alt="Logo" className="w-48" />
+                               </div>
+                               <nav className="space-y-3 flex-grow">
+                                   <button className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                                       📊 Overview
+                                   </button>
+                                   <button onClick={() => navigate('/admincom')} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                                    ⚖️ Complaints    
+                                   </button>
+                                   <button className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                                       👤 User Management
+                                   </button>
+                                   <button onClick={() => navigate("/feedback")} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                                       📄 Reports
+                                   </button>
+                               </nav>
+                               <div className="mt-auto">
+                                   <button onClick={() => navigate('/')} className="w-full p-3 bg-gray-700 rounded-md hover:bg-gray-600 transition-colors">
+                                   📤Logout
+
+
+                                   </button>
+                               </div>
+                           </aside>
+
+            <div className="rounded-lg w-full p-x-12  m-20">
+                <div className="overflow-x-auto rounded-lg">
+                    <table className="min-w-full bg-gray-700 rounded-lg">
+                        <thead className="bg-gray-700 shadow-xl ">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-lg font-medium text-gray-300 uppercase tracking-wider">Name</th>
+                                <th className="px-6 py-3 text-left text-lg font-medium text-gray-300 uppercase tracking-wider">Email</th>
+                                <th className="px-6 py-3 text-left text-lg font-medium text-gray-300 uppercase tracking-wider">Phone</th>
+                                <th className="px-6 py-3 text-left text-lg font-medium text-gray-300 uppercase tracking-wider">DOB</th>
+                                <th className="px-6 py-3 text-left text-lg font-medium text-gray-300 uppercase tracking-wider">Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {users.map((user, index) => (
+                                <tr key={index} >
+                                    <td className="px-6 py-4 whitespace-nowrap bg-gray-800 text-l text-gray-300">{user.username}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap bg-gray-800 text-l text-gray-300">{user.email}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap bg-gray-800 text-l text-gray-300">{user.number}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap bg-gray-800 text-l text-gray-300">{user.dob}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap bg-gray-800 text-l text-gray-300">{user.role}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-                <button className="absolute bottom-4 left-4 text-2xl mb-5 font-medium p-4 w-72 bg-[#00b9ff] text-white   rounded-md">
-                    👮 Admin Name
-                </button>
             </div>
-
-            <div className="bg-[#e6f8ff] rounded-lg w-full p-12 m-10">
-                
-    <div className="overflow-x-auto">
-        <table className="min-w-full bg-white  rounded-lg">
-            <thead className="bg-gray-100 shadow-xl">
-                <tr className="">
-                    <th className="p-5 text-2xl font-medium text-black">Name</th>
-                    <th className="p-5 text-2xl font-medium text-black">Email</th>
-                    <th className="p-5 text-2xl font-medium text-black">Phone</th>
-                    <th className="p-5 text-2xl font-medium text-black">Address</th>
-                    <th className="p-5 text-2xl font-medium text-black">ID Proof</th>
-                    <th className="p-5 text-2xl font-medium text-black">Reports</th>
-                </tr>
-            </thead>
-            <tbody>
-    <tr className="bg-[#ffffff]">
-        <td className="p-5 text-center">Abhishek</td>
-        <td className="p-5 text-center">abhi@mail.com</td>
-        <td className="p-5 text-center">935848145</td>
-        <td className="p-5 text-center">calicut</td>
-        <td className="p-5 text-center">Addar</td>
-        <td className="p-5 text-center">5</td>
-    </tr>
-    <tr className="bg-[#f9fafb]">
-    <td className="p-5 text-center">Abhishek</td>
-        <td className="p-5 text-center">abhi@mail.com</td>
-        <td className="p-5 text-center">935848145</td>
-        <td className="p-5 text-center">calicut</td>
-        <td className="p-5 text-center">Addar</td>
-        <td className="p-5 text-center">1</td>
-    </tr>
- 
-</tbody>
-
-        </table>
-    </div>
-</div>
-
-            </div>
-        
+        </div>
     );
 };

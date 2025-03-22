@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 export const signup = async (req, res) => {
   try {
-    const { username, number, dob, email, password } = req.body;
+    const { username, number, dob, email, address, password } = req.body;
     if (!username || !number || !dob || !email || !password) {
       return res.status(400).json({ message: "please fill all the fields" });
     }
@@ -16,7 +16,7 @@ export const signup = async (req, res) => {
     }
     const SALT = parseInt(process.env.SALT) || 10
     const hashedPass = await bcrypt.hash(password, SALT);
-    await task.create({ username, number, dob, email, password: hashedPass });
+    await task.create({ username, number, dob, email,address, password: hashedPass });
     return res.status(201).json({ message: "user created" });
   } catch (error) {
     console.log(error);
@@ -112,3 +112,44 @@ export const admin = async (req, res) => {
     res.status(500).json({ message: 'server error', error: error });
   }
 };
+export const viewdata = async(req,res)=>{
+  const id = req.params.id;
+
+  try{
+const response = await task.findById(id);
+if(!response){
+  res.status(404).json({message:"user not found"})
+
+}
+return res.status(200).json(response)
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'server error', error: error });
+}
+}
+export const viewalldata= async(req,res)=>{
+  try{
+    const { id } =req.params;
+    if ( !id ) {
+      return res.status(400).json({ message: "Admin ID not provided" });
+
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {   // Validate if ID is a valid MongoDB ObjectId
+      return res.status(400).json({ message: "Invalid Admin ID format" });
+  }
+  const adminuser = await task.findById(id)
+  if(!adminuser || adminuser.role !=="admin"){
+    return res.status(403).json({ message: "Access Denied. Not an admin." });
+
+  }
+  const users = await task.find()
+  return res.status(200).json({
+    message: users.length > 0 ? "Users retrieved successfully" : "No users found",
+    users,
+  })
+}catch (error) {
+  console.error("Internal Server Error:", error);
+  return res.status(500).json({ message: "Internal Server Error" });
+}
+}

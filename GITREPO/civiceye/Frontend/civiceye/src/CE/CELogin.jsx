@@ -4,57 +4,51 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from 'react-hot-toast';
 
-
 export const CELogin = () => {
-
-
-    const [data, setdata] = useState('')
-    const Navigate= useNavigate()
-
+    const [data, setdata] = useState('');
+    const Navigate = useNavigate();
+    const token = localStorage.getItem("token");
     const change = (event) => {
-        setdata({ ...data, [event.target.name]: event.target.value })
-    }
+        setdata({ ...data, [event.target.name]: event.target.value });
+    };
+console.log(token);
 
     const submit = async (event) => {
-        event.preventDefault()
+        event.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:6262/user/signin',data)
-            if(response.data){
-                console.log(response.data)
-                localStorage.setItem('id',response.data.userId)
-                localStorage.setItem('token',response.data.token)
-                toast.success(response.data.message)
-                alert('login Succesful')
-              if(response.data.role==='admin'){
-                Navigate('/admin')
-              }
-                else if(response.data.role==='user'){
-                    Navigate('/reghome')
+            const response = await axios.post('http://127.0.0.1:6262/user/signin', data);
+            if (response.data) {
+                console.log(response.data);
+                localStorage.setItem('id', response.data.userId);
+                localStorage.setItem('token', response.data.token);
+                toast.success(response.data.message);
+                alert('login Succesful');
+                if (response.data.role === 'admin') {
+                    Navigate('/admin');
+                } else if (response.data.role === 'user') {
+                    Navigate('/reghome');
                 }
             }
         } catch (error) {
-            console.log( error);
+            console.log(error);
         }
-    }
+    };
+
     return (
-<div className="relative flex justify-center items-center h-screen px-10">
-
+        <div className="relative flex justify-center items-center h-screen px-10 bg-gray-900 text-white">
             {/* the box  */}
-            <div className="bg-white flex flex-col md:flex-row w-7xl shadow-lg rounded-lg py-10 px-4 md:py-20 md:px-0">
-
+            <div className="bg-gray-800 flex flex-col md:flex-row w-7xl shadow-lg rounded-lg py-10 px-4 md:py-20 md:px-0">
                 {/* Left Section */}
-                <div className="w-full md:w-1/2 flex flex-col justify-between items-center p-8 border-b-2 md:border-b-0 md:border-r-2 border-gray-500">
-
+                <div className="w-full md:w-1/2 flex flex-col justify-between items-center p-8 border-b-2 md:border-b-0 md:border-r-2 border-gray-700">
                     <img width="200px" src={celogofull} alt="Civic Eye Logo" />
-
-                    <p className="text-gray-700 text-center text-xl">
+                    <p className="text-white text-center text-xl">
                         Welcome to CivicEye!
                     </p>
                     <div className='mb-4'>
-                        <p className=" text-gray-500 text-center text-lg">
+                        <p className=" text-white text-center text-lg">
                             Your platform to report, track,
                         </p>
-                        <p className="text-gray-500 text-center text-lg">
+                        <p className="text-white text-center text-lg">
                             and resolve public issues with ease.
                         </p>
                     </div>
@@ -62,11 +56,10 @@ export const CELogin = () => {
 
                 {/* Right Section */}
                 <div className="w-full md:w-1/2 flex flex-col items-center p-8">
-                    <h2 className="text-4xl font-semibold text-gray-800 mb-6">SIGN <span className='text-[#00B9FF]'>IN</span></h2>
+                    <h2 className="text-4xl font-semibold text-gray-300 mb-6">SIGN <span className='text-[#00B9FF]'>IN</span></h2>
                     <form className="w-full max-w-sm" onSubmit={submit}>
-
                         <div className="mb-4">
-                            <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-2">
+                            <label htmlFor="email" className="block text-gray-100 text-sm font-medium mb-2">
                                 Email
                             </label>
                             <input
@@ -74,14 +67,12 @@ export const CELogin = () => {
                                 id="email"
                                 name='email'
                                 type="email"
-                                className="w-full px-4 py-2 border border-gray-700 rounded-lg bg-white placeholder-gray-500
-                                focus:outline-gray-500  active:outline-gray-500 active:shadow-lg"
+                                className="w-full px-4 py-2 border border-gray-700 rounded-lg bg-gray-700 placeholder-gray-500 focus:outline-gray-500 active:outline-gray-500 active:shadow-lg text-white"
                                 placeholder="Email"
                             />
-
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="password" className="block text-gray-700 text-sm font-medium mb-2 focus:">
+                            <label htmlFor="password" className="block text-gray-100 text-sm font-medium mb-2 focus:">
                                 Password
                             </label>
                             <input
@@ -89,7 +80,7 @@ export const CELogin = () => {
                                 id="password"
                                 name='password'
                                 type="password"
-                                className="bg-white w-full px-4 py-2 border border-gray-700 rounded-lg  placeholder-gray-500"
+                                className="bg-gray-700 w-full px-4 py-2 border border-gray-700 rounded-lg placeholder-gray-500 text-white"
                                 placeholder="Password"
                             />
                         </div>
@@ -105,15 +96,14 @@ export const CELogin = () => {
                             SIGN IN
                         </button>
                     </form>
-                    <p className="text-gray-600 text-sm mt-4">
+                    <p className="text-gray-400 text-sm mt-4">
                         Don't Have an Account?{' '}
                         <Link to="/signup" className="text-blue-500 hover:underline">
                             Sign up
                         </Link>
                     </p>
                 </div>
-
             </div>
         </div>
-    )
-}
+    );
+};

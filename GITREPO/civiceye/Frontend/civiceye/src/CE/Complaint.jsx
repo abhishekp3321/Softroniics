@@ -13,7 +13,6 @@ export const Complaint = () => {
     location: "",
     proof: null,
     createdAt: new Date().toISOString(),
-
   });
 
   const comChange = (e) => {
@@ -32,7 +31,7 @@ export const Complaint = () => {
     }
 
     const formData = new FormData();
-    formData.append("userid", userid)
+    formData.append("userid", userid);
     formData.append("description", add.description);
     formData.append("complaint", add.complaint);
     formData.append("location", add.location);
@@ -58,7 +57,7 @@ export const Complaint = () => {
         location: "",
         proof: null
       });
-      navigate('/complaint')
+      navigate('/complaint');
     } catch (error) {
       console.error("Error submitting complaint:", error);
       toast.error(error.response?.data?.message || "Failed to register complaint");
@@ -66,31 +65,31 @@ export const Complaint = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
-      <div className="w-full max-w-2xl p-6">
+    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+      <div className="w-full max-w-2xl p-6 bg-gray-800 rounded-lg shadow-lg">
         <h1 className="text-2xl font-semibold text-center">Report Issues Seamlessly</h1>
-        <p className="mt-2 text-center text-gray-700">
+        <p className="mt-2 text-center text-gray-400">
           Our platform empowers users to submit complaints with ease, offering tools to upload multimedia for comprehensive issue reporting.
         </p>
         <form className="mt-6" onSubmit={comSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-gray-300">Description</label>
             <input
               type="text"
               name="description"
               value={add.description}
               onChange={comChange}
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 mt-1 border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-700 text-white"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Complaint type</label>
+            <label className="block text-sm font-medium text-gray-300">Complaint type</label>
             <select
               name="complaint"
               value={add.complaint}
               onChange={comChange}
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 mt-1 border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-700 text-white"
               required
             >
               <option value="">Select complaint type</option>
@@ -105,18 +104,18 @@ export const Complaint = () => {
             </select>
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Location</label>
+            <label className="block text-sm font-medium text-gray-300">Location</label>
             <input
               type="text"
               name="location"
               value={add.location}
               onChange={comChange}
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 mt-1 border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-700 text-white"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Proof</label>
+            <label className="block text-sm font-medium text-gray-300">Proof</label>
             <input
               type="file"
               id="proof-file"
@@ -126,12 +125,12 @@ export const Complaint = () => {
             />
             <label
               htmlFor="proof-file"
-              className="block w-full px-4 py-2 mt-1 text-center text-white bg-blue-300 rounded-md hover:bg-blue-400 focus:outline-none cursor-pointer"
+              className="block w-full px-4 py-2 mt-1 text-center text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none cursor-pointer"
             >
               Upload photo or video
             </label>
             {add.proof && (
-              <p className="mt-2 text-sm text-gray-600">
+              <p className="mt-2 text-sm text-gray-400">
                 Selected file: {add.proof.name}
               </p>
             )}
@@ -145,7 +144,7 @@ export const Complaint = () => {
             </button>
             <Link
               to="/reghome"
-              className="w-[48%] px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none text-center flex items-center justify-center"
+              className="w-[48%] px-4 py-2 text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none text-center flex items-center justify-center"
             >
               Cancel
             </Link>

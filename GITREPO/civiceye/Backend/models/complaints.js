@@ -28,7 +28,16 @@ const complaintSchema = new mongoose.Schema({
 
         type: String,
         required: true
-    }
+    },
+    status: {
+        type: String,
+        enum: ["Pending","Approved", "Resolved", "Rejected"],
+        default: "Pending"
+    },
+    resolvedAt: {
+        type: String,
+        required: false
+    },
 })
 const complaint = mongoose.model('complaint', complaintSchema)
 export default complaint;

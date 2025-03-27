@@ -4,6 +4,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 export const Complaint = () => {
+  
+
   const userid = localStorage.getItem("id");
   const navigate = useNavigate();
 
@@ -44,9 +46,10 @@ export const Complaint = () => {
     try {
       console.log(formData);
 
-      const response = await axios.post('http://127.0.0.1:6262/proof/add', formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
+    const response = await axios.post('http://127.0.0.1:6262/proof/add', formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    }
+  );
 
       console.log(response.data);
       toast.success("Complaint registered successfully");
@@ -57,11 +60,18 @@ export const Complaint = () => {
         location: "",
         proof: null
       });
+
       navigate('/complaint');
     } catch (error) {
       console.error("Error submitting complaint:", error);
       toast.error(error.response?.data?.message || "Failed to register complaint");
     }
+  };
+  
+  const handelcancel = () => {
+ 
+      navigate('/reghome')
+     
   };
 
   return (
@@ -136,18 +146,17 @@ export const Complaint = () => {
             )}
           </div>
           <div className="flex justify-between">
-            <button
+            <button 
               type="submit"
               className="w-[48%] px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
             >
               Submit
-            </button>
-            <Link
-              to="/reghome"
-              className="w-[48%] px-4 py-2 text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none text-center flex items-center justify-center"
+            </button > 
+            <button onClick={handelcancel}               className="w-[48%] px-4 py-2 text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none "
             >
+      
               Cancel
-            </Link>
+            </button>
           </div>
         </form>
       </div>

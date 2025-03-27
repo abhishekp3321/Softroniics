@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 export const Adminuserlist = () => {
+     const [isLoading, setIsLoading] = useState(true);
    
     const [loggedUserData, setLoggedUserData] = useState({}); // Loggedin user data
     const [users, setUsers] = useState([]); // All users data list
@@ -15,6 +16,7 @@ export const Adminuserlist = () => {
         try {
             if (!userid) return;
             const response = await axios.get(`http://127.0.0.1:6262/user/view/${userid}`);
+
             if (response) {
                 setLoggedUserData(response.data);
             }
@@ -27,6 +29,7 @@ export const Adminuserlist = () => {
         try {
             if (!userid) return;
             const response = await axios.get(`http://127.0.0.1:6262/user/viewall/${userid}`);
+            setIsLoading(false);
             if (response && response.data && response.data.users) {
                 setUsers(response.data.users);
             }
@@ -45,7 +48,16 @@ export const Adminuserlist = () => {
             toast.error("You are not authorized to view this page.");
         }
     }, [loggedUserData, navigate]); // Add navigate as a dependency
-
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-gray-900">
+                <div className="text-center text-gray-400">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                    <p>Loading...</p>
+                    </div>
+            </div>
+        );
+    }
     return (
         <div className="flex w-full h-screen bg-gray-900 text-white">
                   <aside className="bg-gray-800 w-78 p-6 flex flex-col shadow-md">
@@ -53,13 +65,13 @@ export const Adminuserlist = () => {
                                    <img src={celogofull} alt="Logo" className="w-48" />
                                </div>
                                <nav className="space-y-3 flex-grow">
-                                   <button className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                                   <button onClick={() => navigate('/dash')} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
                                        📊 Overview
                                    </button>
                                    <button onClick={() => navigate('/admincom')} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
                                     ⚖️ Complaints    
                                    </button>
-                                   <button className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                                   <button className="flex items-center w-full p-3 bg-blue-500 text-white rounded-lg">
                                        👤 User Management
                                    </button>
                                    <button onClick={() => navigate("/feedback")} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
@@ -67,7 +79,7 @@ export const Adminuserlist = () => {
                                    </button>
                                </nav>
                                <div className="mt-auto">
-                                   <button onClick={() => navigate('/')} className="w-full p-3 bg-gray-700 rounded-md hover:bg-gray-600 transition-colors">
+                                   <button onClick={() => navigate('/login')} className="w-full p-3 bg-gray-700 rounded-md hover:bg-gray-600 transition-colors">
                                    📤Logout
 
 

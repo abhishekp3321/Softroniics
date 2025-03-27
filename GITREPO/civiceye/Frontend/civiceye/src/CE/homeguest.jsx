@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -9,17 +9,28 @@ import celogofull from '../assets/celogofull.png';
 import tick from '../assets/tick.png';
 import reports from '../assets/reports.png';
 import prize from '../assets/prize.png';
-import law from '../assets/law.png';
 import mail from '../assets/mail.png';
 import call from '../assets/call.png';
+import put from "../assets/waste.jpeg";
+import shake from "../assets/shake.jpeg"
+import parking from "../assets/parking.jpeg"
 import waste from '../assets/waste.png';
 import alert from '../assets/alert.png';
 import traffic from '../assets/traffic.png';
 import others from '../assets/others.png';
 
 export const Homeguest = () => {
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
+        // Simulate loading delay (replace with actual data fetching if needed)
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+
         AOS.init({ duration: 1200, once: true });
+
+        return () => clearTimeout(timer); // Clear timeout on unmount
     },);
 
     const contactRef = useRef(null);
@@ -34,6 +45,17 @@ export const Homeguest = () => {
         aboutRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-gray-900">
+                <div className="text-center text-gray-400">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                    <p>Loading...</p>
+                    </div>
+            </div>
+        );
+    }
+
     return (
         <div className="bg-gray-900 min-h-screen">
             {/* Navbar */}
@@ -46,11 +68,7 @@ export const Homeguest = () => {
                                 Home
                             </a>
                         </li>
-                        <li>
-                            <a href="#" className="text-white font-semibold hover:text-blue-500 transition duration-300">
-                                My Complaints
-                            </a>
-                        </li>
+
                         <li>
                             <a href="#about" onClick={scrollToAbout} className="text-white font-semibold hover:text-blue-500 transition duration-300">
                                 About
@@ -62,7 +80,7 @@ export const Homeguest = () => {
                             </a>
                         </li>
                     </ul>
-                    <Link to="/" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300">
+                    <Link to="/login" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300">
                         Login
                     </Link>
                 </div>
@@ -71,51 +89,36 @@ export const Homeguest = () => {
             {/* Main Content */}
             <div className="pt-20">
                 {/* Carousel */}
-                <Carousel
-                    autoPlay
-                    showThumbs={false}
-                    showStatus={false}
-                    infiniteLoop
-                    interval={5000}
-                    className="h-[60vh]"
-                >
-                    <div>
-                        <img src={por} alt="Civic Engagement" className="w-full object-cover h-[60vh]" />
-                        <div className="absolute inset-0 flex items-center bg-opacity-40">
-                            <div className="container mx-auto px-4 sm:px-20">
-                                <h2 className="text-3xl sm:text-5xl font-bold text-white mb-4">Report Issues in Your Community</h2>
-                                <p className="text-xl text-white mb-6">Help create a better environment for everyone</p>
-                                <Link to="/signup" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300">
-                                    Sign Up
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <img src={por} alt="Community Safety" className="w-full object-cover h-[60vh]" />
-                        <div className="absolute inset-0 flex items-center bg-opacity-40">
-                            <div className="container mx-auto px-4 sm:px-20">
-                                <h2 className="text-3xl sm:text-5xl font-bold text-white mb-4">Building Safer Communities Together</h2>
-                                <p className="text-xl text-white mb-6">Your vigilance makes a difference</p>
-                                <Link to="/signup" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300">
-                                    Sign Up
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <img src={por} alt="Civic Responsibility" className="w-full object-cover h-[60vh]" />
-                        <div className="absolute inset-0 flex items-center bg-opacity-20">
-                            <div className="container mx-auto px-4 sm:px-20">
-                                <h2 className="text-3xl sm:text-5xl font-bold text-white mb-4">Earn Rewards for Civic Responsibility</h2>
-                                <p className="text-xl text-white mb-6">Get incentives for making a positive impact</p>
-                                <Link to="/signup" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300">
-                                    Sign Up
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </Carousel>
+             <Carousel
+              autoPlay
+              showThumbs={false}
+              showStatus={false}
+              infiniteLoop
+              interval={5000}
+              className="h-[70vh] w-[50vw] flex justify-center sm:mx-120  items-center"
+            >
+              <div>
+                <img
+                  src={parking}
+                  alt="Civic Engagement"
+                  className="w-[20%] object-fill  h-[60vh]"
+                />
+              </div>
+              <div>
+                <img
+                  src={shake}
+                  alt="Community Safety"
+                  className="w-full object-fill h-[60vh]"
+                />
+              </div>
+              <div>
+                <img
+                  src={put}
+                  alt="Civic Responsibility"
+                  className="w-full object-fill h-[60vh]"
+                />
+              </div>
+            </Carousel>
 
                 {/* Register Complaints Section */}
                 <div className="w-full mx-auto py-16 space-y-10 px-4 sm:px-20 bg-gray-900">
@@ -195,7 +198,7 @@ export const Homeguest = () => {
 
                 {/* How It Works Section */}
                 <section className="py-16 bg-gray-900">
-                    <div ref={aboutRef} id="about" className="max-w-6xl mx-auto px-4 sm:px-20" data-aos="fade-right">
+                    <div ref={aboutRef} id="about" className="max-w-8xl mx-auto px-4 sm:px-20" data-aos="fade-right">
                         <h2 className="text-3xl font-bold text-center mb-4 text-white" data-aos="fade-up">
                             How It Works
                         </h2>
@@ -288,21 +291,7 @@ export const Homeguest = () => {
                         </div>
 
                         {/* Feedback Form */}
-                        <div className="mt-16 bg-gray-800 p-8 rounded-xl shadow-lg max-w-3xl mx-auto" data-aos="fade-up">
-                            <h3 className="text-xl font-bold mb-4 text-white">
-                                Send Us Feedback
-                            </h3>
-                            <p className="text-gray-400 mb-6">
-                                We value your opinion and are constantly working to improve our service.
-                            </p>
-                            <textarea
-                                className="w-full h-32 p-4 border border-gray-700 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-gray-900 text-gray-300"
-                                placeholder="Write your feedback or suggestions here..."
-                            ></textarea>
-                            <button className="bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">
-                                Submit Feedback
-                            </button>
-                        </div>
+
                     </div>
                 </div>
 
@@ -413,4 +402,3 @@ export const Homeguest = () => {
                 </div>
         );
 }
-

@@ -5,6 +5,8 @@ import celogofullpng from "../assets/celogofull.png";
 import logout from '../assets/logout.png';
 
 const MyComplaints = () => {
+    const [isLoading, setIsLoading] = useState(true);
+   
     const navigate = useNavigate();
     const [complaints, setComplaints] = useState([]);
     const userid = localStorage.getItem("id");
@@ -24,10 +26,27 @@ const MyComplaints = () => {
                 setComplaints(response.data.complaints);
             } catch (error) {
                 console.error("Error fetching complaints:", error.response?.data || error.message);
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchComplaints();
     }, [userid]);
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-gray-900">
+                <div className="text-center text-gray-400">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                    <p>Loading...</p>
+                    </div>
+            </div>
+        );
+    }
+    const handelcancel = () => {
+        
+            navigate('/reghome')
+          
+    };
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center px-4 py-8 md:px-6 md:py-10">
@@ -44,7 +63,7 @@ const MyComplaints = () => {
                     >
                         Submit New Complaint
                     </button>
-                    <button className="flex cursor-pointer items-center space-x-2" onClick={() => navigate('/reghome')}>
+                    <button className="flex cursor-pointer items-center space-x-2" onClick={handelcancel}>
                         <img src={logout} alt="Logout" className="w-8 h-8" />
                     </button>
                 </div>
@@ -98,5 +117,6 @@ const MyComplaints = () => {
         </div>
     );
 };
+
 
 export default MyComplaints;

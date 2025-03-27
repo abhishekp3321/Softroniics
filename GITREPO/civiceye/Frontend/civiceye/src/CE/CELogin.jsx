@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from 'react-hot-toast';
 
-export const CELogin = () => {
+export const CELogin = () => {      
     const [data, setdata] = useState('');
     const Navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -21,18 +21,17 @@ console.log(token);
                 console.log(response.data);
                 localStorage.setItem('id', response.data.userId);
                 localStorage.setItem('token', response.data.token);
-                toast.success(response.data.message);
-                alert('login Succesful');
                 if (response.data.role === 'admin') {
                     Navigate('/admin');
                 } else if (response.data.role === 'user') {
                     Navigate('/reghome');
                 }
             }
-        } catch (error) {
+        } catch (error) {   
             console.log(error);
         }
     };
+   
 
     return (
         <div className="relative flex justify-center items-center h-screen px-10 bg-gray-900 text-white">

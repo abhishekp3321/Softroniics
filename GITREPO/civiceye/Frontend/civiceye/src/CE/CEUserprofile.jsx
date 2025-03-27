@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 export const CEUserProfile = () => {
     const navigate = useNavigate();
     const [popup, setPopup] = useState(false);
+     const [isLoading, setIsLoading] = useState(true);
+         
 
     const formDataState = {
         username: "",
@@ -24,11 +26,13 @@ export const CEUserProfile = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+    
         try {
             const response = await axios.put(
                 `http://127.0.0.1:6262/user/update/${userid}`,
                 formData
             );
+     
             console.log("User updated successfully!", response.data);
             setPopup(true);
         } catch (error) {
@@ -36,6 +40,9 @@ export const CEUserProfile = () => {
             alert("Failed to update user.");
         }
     };
+  handleexit = () => {
+    navigate("/reghome");
+  };
 
     const fetchData = async () => {
         if (!userid) return;
@@ -52,6 +59,7 @@ export const CEUserProfile = () => {
                     address:response.data.address||""   
                      
                 });
+                setIsLoading(false);
             }
         } catch (error) {
             console.error("Error fetching user data:", error);
@@ -61,7 +69,16 @@ export const CEUserProfile = () => {
     useEffect(() => {
         fetchData();
     }, [userid]);
-
+    if (isLoading) {
+        return (
+          <div className="flex items-center justify-center h-screen bg-gray-900">
+            <div className="text-center text-gray-400">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <p>Loading...</p>
+            </div>
+          </div>
+        );
+      }
     return (
         <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
             <div className="bg-gray-800 p-8 rounded-2xl shadow-lg w-[80%] max-w-4xl">
@@ -157,8 +174,8 @@ export const CEUserProfile = () => {
                     <div className="flex justify-between gap-4 mt-6">
                         <button
                             type="button"
-                            onClick={() => navigate("/reghome")}
                             className="bg-blue-500 text-white px-6 py-2 rounded-2xl hover:bg-blue-600"
+                            onClick={handleexit}
                         >
                             HOME
                         </button>

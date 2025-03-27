@@ -6,6 +6,7 @@ import axios from 'axios';
 export const Signup = () => {
     const [data, setdata] = useState({});
     const Navigate = useNavigate();
+           
 
     const change = (event) => {
         setdata({ ...data, [event.target.name]: event.target.value });
@@ -29,6 +30,7 @@ export const Signup = () => {
             console.error("Signup Error:", error.response?.data || error.message);
         }
     };
+  
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-900 px-10 text-white">
@@ -143,7 +145,7 @@ export const Signup = () => {
 
                     <p className="text-gray-100 text-sm text-center mt-4">
                         Already have an account?{" "}
-                        <Link to="/" className="text-blue-500 hover:underline">
+                        <Link to="/login" className="text-blue-500 hover:underline">
                             Sign in
                         </Link>
                     </p>

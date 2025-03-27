@@ -15,23 +15,109 @@ import others from "../assets/others.png";
 import tick from "../assets/tick.png";
 import reports from "../assets/reports.png";
 import prize from "../assets/prize.png";
+import put from "../assets/waste.jpeg";
 import mail from "../assets/mail.png";
 import celogofull from "../assets/celogofull.png";
+import parking from "../assets/parking.jpeg"
 import male from "../assets/male.png";
 import call from "../assets/call.png";
+import shake from "../assets/shake.jpeg"
 import axios from "axios";
 import toast from "react-hot-toast";
 
+const Profilelogout = ({ onClose }) => {
+  const navigate = useNavigate();
+ 
+
+  return (
+    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-700 rounded-lg shadow-lg p-8 w-96">
+      <div className="flex justify-end">
+        <button onClick={onClose} className="text-gray-100 hover:text-gray-300">
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div className="flex flex-col items-center mt-4">
+        <div className="relative w-20 h-20 mb-4">
+          <div className="relative bg-white rounded-full p-3 flex items-center justify-center">
+            <svg
+              className="h-10 w-10 text-blue-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <text x="7" y="20" fontSize="25" fontWeight="bold">
+                ?
+              </text>
+            </svg>
+          </div>
+        </div>
+
+        <p className="text-sm text-white mb-4">Are you sure you want to log out?</p>
+        <div className="flex justify-between gap-10 mt-6">
+          <button
+            onClick={() => {
+              navigate("/");
+              onClose(); // Close the popup after navigating
+            }}
+            className="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded"
+          >
+            Yes, Logout
+          </button>
+          <button
+            onClick={onClose}
+            className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+export { Profilelogout };
+
 export const Reghome = () => {
+  
+ 
   const [popup, setPopup] = useState(false);
   const [dropdown, setDropdown] = useState(false);
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false); // State for logout popup
+  const [feedbackpop, setfeedbackpop] = useState(false);
+  const [deletepopup,setdeletepopup] = useState(false)
 
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const contactRef = useRef(null);
-  const userid = localStorage.getItem('id');
+  const userid = localStorage.getItem("id");
   const aboutRef = useRef(null);
+ const [stats, setStats] = useState(null);
+  const fetchComplaintsData = async () => {
+    try {
+        const response = await axios.get("http://127.0.0.1:6262/proof/data")
+        
+        
+        setStats(response.data.stats);
+    } catch (error) {
+        console.error('Error fetching complaints data:', error);
+    }
+};
 
+useEffect(() => {
+    fetchComplaintsData();
+}, []);
   const deleteAccount = async () => {
     try {
       if (!userid) {
@@ -39,14 +125,16 @@ export const Reghome = () => {
         return;
       }
 
-      let response = await axios.delete(`http://127.0.0.1:6262/user/delete/${userid}`);
+      let response = await axios.delete(
+        `http://127.0.0.1:6262/user/delete/${userid}`
+      );
       console.log(response.data);
 
       toast.success("Account deleted successfully");
       localStorage.clear();
 
       setTimeout(() => {
-        navigate("/homeguest");
+        navigate("/");
       }, 1000);
     } catch (error) {
       console.log("Error deleting account:", error);
@@ -85,38 +173,50 @@ export const Reghome = () => {
 
   const [feedback, setfeedback] = useState({ description: "" });
 
-const feedbackchange = (event) => {
-  setfeedback({ ...feedback, [event.target.name]: event.target.value });
-};
-
-const postfeedback = async (event) => {
-  event.preventDefault();
-  const feedbackPayload = {
-    userid: userid, 
-    description: feedback.description,
-    timestamp: new Date().toISOString(),
+  const feedbackchange = (event) => {
+    setfeedback({ ...feedback, [event.target.name]: event.target.value });
   };
 
-  try {
-    const response = await axios.post(
-       "http://127.0.0.1:6262/feedback/post",
-      feedbackPayload
-    );
-    console.log(response);
-    setfeedback({ description: "" });
-    
-  } catch (error) {
-    console.error("Error submitting feedback:", error);
-    if(error.response && error.response.data && error.response.data.message){
-      toast.error(error.response.data.message);
+  const postfeedback = async (event) => {
+    event.preventDefault();
+    const feedbackPayload = {
+      userid: userid,
+      description: feedback.description,
+      timestamp: new Date().toISOString(),
+    };
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:6262/feedback/post",
+        feedbackPayload
+      );
+      console.log(response);
+      setfeedback({ description: "" });
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Failed to submit feedback");
+      }
     }
-    else {
-      toast.error("Failed to submit feedback");
-    }
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutPopup(true);
+    setDropdown(false); // Close the dropdown when logout is clicked
+  };
+
+  const closeLogoutPopup = () => {
+    setShowLogoutPopup(false);
+  };
+  const handelfeedClick=()=>{
+    setfeedbackpop(true)
 
   }
-    
-} 
+  const handeldeletepopup =() =>{
+    setdeletepopup(true)
+  }
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
@@ -190,113 +290,73 @@ const postfeedback = async (event) => {
                 </Link>
 
                 <button
-                  className="block w-full cursor-pointer text-left px-4 py-2 text-red-500 hover:bg-gray-700 transition duration-200"
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        "Are you sure you want to delete your account? This action cannot be undone."
-                      )
-                    ) {
-                      deleteAccount();
-                    }
-                    setDropdown(false);
-                  }}
+  className="block w-full cursor-pointer text-left px-4 py-2 text-red-500 hover:bg-gray-700 transition duration-200"
+  onClick={() => {
+    deleteAccount();
+    setDropdown(false);
+    handeldeletepopup(); // Call the function here
+  }}
+>
+  Delete Account
+</button>
+                <button
+                  className="block w-full cursor-pointer text-left px-4 py-2 text-gray-300 hover:bg-gray-700 transition duration-200"
+                  onClick={handleLogoutClick} // Open logout popup
                 >
-                  Delete Account
+                  Logout
                 </button>
-
-                <Link to="/" onClick={() => setDropdown(false)}>
-                  <button className="block w-full cursor-pointer text-left px-4 py-2 text-gray-300 hover:bg-gray-700 transition duration-200">
-                    Logout
-                  </button>
-                </Link>
               </div>
             )}
           </div>
         </div>
       </nav>
+      {deletepopup && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-gray-900/80">
+                            <div className="relative bg-gray-800 p-6 rounded-lg shadow-xl max-w-3xl w-full">
+                                <button
+                                    onClick={() => setdeletepopup(false)}
+                                    className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
+                                >
+                                    ✖
+                                </button>
+                                <AccountDelete onClose={() => setdeletepopup(false)} />
+                            </div>
+                        </div>
+                    )}
 
       {/* Main Content - add padding top to accommodate fixed navbar */}
       <div className="pt-20">
         {/* Carousel */}
         <Carousel
-          autoPlay
-          showThumbs={false}
-          showStatus={false}
-          infiniteLoop
-          interval={5000}
-          className="h-[60vh]"
-        >
-          <div>
-            <img
-              src={por}
-              alt="Civic Engagement"
-              className="w-full object-cover h-[60vh]"
-            />
-            <div className="absolute inset-0 flex items-center bg-opacity-40">
-              <div className="container mx-auto px-4 sm:px-20">
-                <h2 className="text-3xl sm:text-5xl font-bold text-white mb-4">
-                  Report Issues in Your Community
-                </h2>
-                <p className="text-xl text-white mb-6">
-                  Help create a better environment for everyone
-                </p>
-                <button
-                  onClick={() => setPopup(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300"
-                >
-                  Register Complaint
-                </button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <img
-              src={por}
-              alt="Community Safety"
-              className="w-full object-cover h-[60vh]"
-            />
-            <div className="absolute inset-0 flex items-center bg-opacity-40">
-              <div className="container mx-auto px-4 sm:px-20">
-                <h2 className="text-3xl sm:text-5xl font-bold text-white mb-4">
-                  Building Safer Communities Together
-                </h2>
-                <p className="text-xl text-white mb-6">
-                  Your vigilance makes a difference
-                </p>
-                <button
-                  onClick={() => setPopup(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300"
-                >
-                  Report an Issue
-                </button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <img
-              src={por}
-              alt="Civic Responsibility"
-              className="w-full object-cover h-[60vh]"
-            />
-            <div className="absolute inset-0 flex items-center bg-opacity-20">
-              <div className="container mx-auto px-4 sm:px-20">
-                <h2 className="text-3xl sm:text-5xl font-bold text-white mb-4">
-                  Earn Rewards for Civic Responsibility
-                </h2>
-                <p className="text-xl text-white mb-6">
-                  Get incentives for making a positive impact
-                </p>
-                <button
-                  onClick={() => setPopup(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300"
-                >
-                  Get Started
-                </button>
-              </div>
-            </div>
-          </div>
-        </Carousel>
+  autoPlay
+  showThumbs={false}
+  showStatus={false}
+  infiniteLoop
+  interval={5000}
+  className="h-[70vh] w-[50vw] flex justify-center sm:mx-120  items-center"
+>
+  <div>
+    <img
+      src={parking}
+      alt="Civic Engagement"
+      className="w-[20%] object-fill  h-[60vh]"
+    />
+  </div>
+  <div>
+    <img
+      src={shake}
+      alt="Community Safety"
+      className="w-full object-fill h-[60vh]"
+    />
+  </div>
+  <div>
+    <img
+      src={put}
+      alt="Civic Responsibility"
+      className="w-full object-fill h-[60vh]"
+    />
+  </div>
+</Carousel>
 
         {/* Complaint Popup */}
         {popup && (
@@ -326,9 +386,16 @@ const postfeedback = async (event) => {
           </div>
         )}
 
+        {/* Logout Popup */}
+        {showLogoutPopup && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-gray-900/80">
+            <Profilelogout onClose={closeLogoutPopup} />
+          </div>
+        )}
+
         {/* Register Complaints Section */}
-        <div className="w-full mx-auto py-16 space-y-10 px-4 sm:px-20 bg-gray-900">
-          <div className="max-w-6xl mx-auto">
+        <div className="w-full mx-auto py-16 space-y-10 px-4 sm:px-20 bg-gray-900 ">
+          <div className="max-w-6xl mx-auto ">
             <h2
               className="text-3xl font-bold text-center mb-4 text-white"
               data-aos="fade-up"
@@ -344,15 +411,15 @@ const postfeedback = async (event) => {
               keep our community safe and clean.
             </p>
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 "
               data-aos="fade-up"
               data-aos-delay="200"
             >
               <button
                 onClick={() => setPopup(true)}
-                className="bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                className="bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-t-5 border-green-500"
               >
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center mb-4 ">
                   <img src={waste} alt="Waste Dumping" className="w-16 h-16" />
                 </div>
                 <p className="text-white text-center font-semibold">
@@ -364,7 +431,7 @@ const postfeedback = async (event) => {
               </button>
               <button
                 onClick={() => setPopup(true)}
-                className="bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                className="bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-t-5 border-red-500"
               >
                 <div className="flex justify-center mb-4">
                   <img src={alert} alt="Public Nuisance" className="w-16 h-16" />
@@ -378,7 +445,7 @@ const postfeedback = async (event) => {
               </button>
               <button
                 onClick={() => setPopup(true)}
-                className="bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                className="bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-t-5 border-yellow-500"
               >
                 <div className="flex justify-center mb-4">
                   <img
@@ -396,7 +463,7 @@ const postfeedback = async (event) => {
               </button>
               <button
                 onClick={() => setPopup(true)}
-                className="bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                className="bg-gray-700 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-t-5 border-purple-500"
               >
                 <div className="flex justify-center mb-4">
                   <img src={others} alt="Others" className="w-16 h-16" />
@@ -427,31 +494,32 @@ const postfeedback = async (event) => {
               impact of citizen reports.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center">
+              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center border-t-5 border-blue-500">
                 <div className="flex justify-center mb-6">
                   <img src={tick} alt="Complaints Registered" className="w-16 h-16" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">
                   Complaints Registered
                 </h3>
-                <p className="text-4xl font-bold text-blue-500">1,002</p>
+                <div className="text-4xl font-bold text-blue-500 "> {stats ? stats.totalComplaints : "Loading..."}
+                </div>
                 <p className="text-gray-400 mt-2">
                   Citizen reports submitted
                 </p>
               </div>
-              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center">
+              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center  border-t-5 border-green-500">
                 <div className="flex justify-center mb-6">
                   <img src={reports} alt="Reports Filed" className="w-16 h-16" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">
                   Reports Filed
                 </h3>
-                <p className="text-4xl font-bold text-blue-500">992</p>
+                <div className="text-4xl font-bold text-blue-500">{stats ? stats.statusCounts?.Approved ?? 0 : "Loading..."}</div>
                 <p className="text-gray-400 mt-2">
                   Cases processed by authorities
-                  </p>
+                </p>
               </div>
-              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center">
+              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center  border-t-5 border-yellow-500">
                 <div className="flex justify-center mb-6">
                   <img
                     src={prize}
@@ -462,7 +530,7 @@ const postfeedback = async (event) => {
                 <h3 className="text-xl font-bold text-white mb-2">
                   Rewards Distributed
                 </h3>
-                <p className="text-4xl font-bold text-blue-500">886</p>
+                <div className="text-4xl font-bold text-blue-500">   {stats ? stats.statusCounts?.Resolved ?? 0 : "Loading..."}</div>
                 <p className="text-gray-400 mt-2">
                   Incentives for civic participation
                 </p>
@@ -476,10 +544,10 @@ const postfeedback = async (event) => {
           <div
             ref={aboutRef}
             id="about"
-            className="max-w-6xl mx-auto px-4 sm:px-20"
+            className="max-w-8xl mx-auto px-4 sm:px-20"
             data-aos="fade-right"
           >
-            <h2
+            <h2 
               className="text-3xl font-bold text-center mb-4 text-white"
               data-aos="fade-up"
             >
@@ -595,6 +663,7 @@ const postfeedback = async (event) => {
                 </p>
               </div>
             </div>
+            
 
             {/* Feedback Form */}
             <div
@@ -609,19 +678,37 @@ const postfeedback = async (event) => {
                 service.
               </p>
               <form onSubmit={postfeedback} className="space-y-4">
-              <textarea
-                className="w-full h-32 p-4 border border-gray-700 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-gray-900 text-gray-300"
-                name="description"
-                placeholder="Write your feedback or suggestions here..."
-                value={feedback.description}
-                onChange={feedbackchange}              ></textarea>
-              <button className="bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">
-                Submit Feedback
-              </button>
-            </form>
+                <textarea
+                  className="w-full h-32 p-4 border border-gray-700 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-gray-900text-gray-300"
+                  name="description"
+                  placeholder="Write your feedback or suggestions here..."
+                  value={feedback.description}
+                  onChange={feedbackchange}
+
+
+                ></textarea>
+                <button onClick={handelfeedClick} className="bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">
+                  Submit Feedback
+                </button>
+              </form>
             </div>
           </div>
         </div>
+         {/* Logout Popup */}
+         {feedbackpop && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-gray-900/80">
+                            <div className="relative bg-gray-800 p-6 rounded-lg shadow-xl max-w-3xl w-full">
+                                <button
+                                    onClick={() => setfeedbackpop(false)}
+                                    className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
+                                >
+                                    ✖
+                                </button>
+                                <Userfeedback onClose={() => setfeedbackpop(false)} />
+                            </div>
+                        </div>
+                    )}
+
 
         {/* Footer */}
         <footer className="bg-gray-800 text-white">
@@ -700,11 +787,11 @@ const postfeedback = async (event) => {
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
-                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        <path d="M2.003 5.884L10 9.882l7.99.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                        <path d="M18 8.118l-8 4-8-4V4h16v4.118z" />
                       </svg>
                     </span>
-                    <p className="text-gray-400">Softronics@gmail.com</p>
+                    <p className="text-gray-400">support@civiceye.com</p>
                   </div>
                 </div>
               </div>
@@ -714,57 +801,51 @@ const postfeedback = async (event) => {
                 <h3 className="text-lg font-semibold border-l-4 border-blue-500 pl-3 mb-6">
                   Quick Links
                 </h3>
-                <ul className="space-y-3">
+                <ul className="space-y-4">
                   <li>
-                    <Link
-                      to="/"
-                      className="text-gray-400 hover:text-white transition duration-300"
+                    <a
+                      href="#"
+                      className="text-gray-400 hover:text-blue-500 transition duration-300"
                     >
                       Home
-                    </Link>
+                    </a>
                   </li>
                   <li>
                     <a
                       href="#"
                       onClick={() => navigate("/complaints")}
-
-                      className="text-gray-400 hover:text-white transition duration-300"
+                      className="text-gray-400 hover:text-blue-500 transition duration-300"
                     >
                       My Complaints
                     </a>
                   </li>
                   <li>
-                    <Link
-                      to="/signup"
-                      className="text-gray-400 hover:text-white transition duration-300"
-                    >
-                      Register
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
-                      className="text-gray-400 hover:text-white transition duration-300"
-                    >
-                      Login
-                    </Link>
-                  </li>
-                  <li>
                     <a
                       href="#about"
                       onClick={scrollToAbout}
-                      className="text-gray-400 hover:text-white transition duration-300"
+                      className="text-gray-400 hover:text-blue-500 transition duration-300"
                     >
-                      About Us
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#contact"
+                      onClick={scrollToContact}
+                      className="text-gray-400 hover:text-blue-500 transition duration-300"
+                    >
+                      Contact
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
 
-            {/* Footer Copyright */}
-            <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
-              <p>© CivicEye 2025 | Empowering Citizens, Improving Communities.</p>
+            {/* Copyright Section */}
+            <div className="mt-12 border-t border-gray-700 pt-6 text-center">
+              <p className="text-gray-400">
+                &copy; {new Date().getFullYear()} CivicEye. All rights reserved.
+              </p>
             </div>
           </div>
         </footer>
@@ -772,3 +853,30 @@ const postfeedback = async (event) => {
     </div>
   );
 };
+const Userfeedback = ({ onClose }) => {
+  return (
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white text-center">
+          <h2 className="text-xl font-semibold mb-4">FedddBack is Submited</h2>
+          <button
+              onClick={onClose}
+              className="mt-4 px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600"
+          >
+              Close
+          </button>
+      </div>
+  );
+};
+const AccountDelete = ({ onClose }) => {
+  return (
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white text-center">
+          <h2 className="text-xl font-semibold mb-4">Account Has Been Deleted</h2>
+          <button
+              onClick={onClose}
+              className="mt-4 px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600"
+          >
+              Close
+          </button>
+      </div>
+  );
+};
+export default Reghome;

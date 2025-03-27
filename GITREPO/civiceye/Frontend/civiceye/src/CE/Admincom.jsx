@@ -7,33 +7,34 @@ import toast from "react-hot-toast";
 
 export const Admincom = () => {
     const navigate = useNavigate();
+
+    const [is, setIs] = useState(true);
+    const [update, setUpdate] = useState(false);
+    
     const [complaints, setComplaints] = useState([]);
     const [filterStatus, setFilterStatus] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
     const [updatedata, setupdatedata] = useState({ status: "" });
     const userid = localStorage.getItem("id");
-    const [loading, setLoading] = useState(false);
-    const [updateLoading, setUpdateLoading] = useState(false);
 
     useEffect(() => {
         const fetchComplaints = async () => {
-            setLoading(true);
             if (!userid) {
                 console.error("No user ID found");
-                setLoading(false);
                 return;
             }
             try {
                 const response = await axios.get(`http://127.0.0.1:6262/proof/getall/${userid}`);
                 setComplaints(response.data);
+                setIs(false);
+
+
             } catch (error) {
                 console.error("Error fetching complaints:", error.response?.data || error.message);
                 setComplaints([]);
                 toast.error("Failed to fetch complaints.");
-            } finally {
-                setLoading(false);
-            }
+            } 
         };
         fetchComplaints();
     }, [userid]);
@@ -45,7 +46,7 @@ export const Admincom = () => {
     const statussubmit = async (complaintId, event) => {
         event.preventDefault();
         if (!updatedata.status) return toast.error("Please select a status!");
-        setUpdateLoading(true);
+        setUpdate(true);
         try {
             const response = await axios.put(`http://127.0.0.1:6262/proof/update/${complaintId}`, { status: updatedata.status });
             setComplaints(prev => prev.map(com => com._id === complaintId ? { ...com, status: updatedata.status } : com));
@@ -54,7 +55,7 @@ export const Admincom = () => {
             console.error("Error updating status:", error.response?.data || error.message);
             toast.error("Failed to update status.");
         } finally {
-            setUpdateLoading(false);
+            setUpdate(false);
         }
     };
 
@@ -75,11 +76,20 @@ export const Admincom = () => {
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
         } catch (error) {
-            console.error("Error downloading file:", error);
+            console.error("Error down file:", error);
             toast.error("Download failed. Try again.");
         }
     };
-
+    if (is) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-gray-900">
+                <div className="text-center text-gray-400">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                    <p>...</p>
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="flex w-full h-screen bg-gray-900 text-white">
             <aside className="bg-gray-800 w-64 p-6 flex flex-col shadow-md">
@@ -87,7 +97,7 @@ export const Admincom = () => {
                     <img src={celogofull} alt="Logo" className="w-48" />
                 </div>
                 <nav className="space-y-3 flex-grow">
-                    <button className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700">📊 Overview</button>
+                    <button onClick={() => navigate('/dash')} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700">📊 Overview</button>
                     <button className="flex items-center w-full p-3 bg-blue-500 text-white rounded-lg">⚖️ Complaints</button>
                     <button onClick={() => navigate('/admin')} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700">👤 User Management</button>
                     <button onClick={() => navigate("/feedback")} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700">📄 Reports</button>
@@ -101,15 +111,17 @@ export const Admincom = () => {
                         <option value="all">All Statuses</option>
                         <option value="Pending">Pending</option>
                         <option value="Resolved">Resolved</option>
-                        <option value="In Progress">In Progress</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+
                     </select>
-                    <button onClick={() => navigate('/')} className="flex items-center space-x-2 mt-4 md:mt-0">
+                    <button onClick={() => navigate('/login')} className="flex items-center space-x-2 mt-4 md:mt-0">
                         <img src={logout} alt="Logout" className="w-8 h-8" />
                     </button>
                 </div>
 
-                {loading ? (
-                    <div className="text-center">Loading...</div>
+                {filteredComplaints.length === 0 ? (
+                    <div className="text-center">...</div>
                 ) : (
                     <div className="overflow-x-auto bg-gray-800 rounded-lg shadow-md">
                         <table className="min-w-full divide-y divide-gray-700">
@@ -151,10 +163,9 @@ export const Admincom = () => {
                                                     <option value="Resolved">Resolved</option>
                                                     <option value="Rejected">Rejected</option>
                                                     <option value="Approved">Approved</option>
-                                                    <option value="In Progress">In Progress</option>
                                                 </select>
-                                                <button type="submit" className="ml-2 px-3 py-1.5 bg-blue-600 hover:bg-gray-300 rounded-lg" disabled={updateLoading}>
-                                                    {updateLoading ? "Updating..." : "Submit"}
+                                                <button type="submit" className="ml-2 px-3 py-1.5 bg-blue-600 hover:bg-gray-300 rounded-lg" disabled={update}>
+                                                    {update ? "Updating..." : "Submit"}
                                                 </button>
                                             </form>
                                         </td>

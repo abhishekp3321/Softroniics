@@ -5,23 +5,24 @@ import axios from 'axios';
 
 const Adminfeedback = () => {
     const navigate = useNavigate();
+      const [isLoading, setIsLoading] = useState(true);
+       
     const [feedback, setFeedback] = useState([]);
-    const [update, setUpdate] = useState({ status: "" });
-    const feedbackid = localStorage.getItem('id');
     const [updateLoading, setUpdateLoading] = useState(false);
+    const [statusUpdates, setStatusUpdates] = useState({}); // Store individual status updates
 
-    const handlechange = (e) => {
-        setUpdate({ ...update, [e.target.name]: e.target.value });
+    const handleChange = (id, status) => {
+        setStatusUpdates((prev) => ({
+            ...prev,
+            [id]: status,
+        }));
     };
 
-    const handleupdate = async (id, status) => {
-        setUpdateLoading(true);
+    const handleUpdate = async (id) => {
         try {
-            const response = await axios.put(`http://127.0.0.1:6262/feedback/update/${id}`, { status: status });
+            const response = await axios.put(`http://127.0.0.1:6262/feedback/update/${id}`, { status: statusUpdates[id] || "Pending" });
             if (response.data) {
-                console.log(response.data);
-                setUpdate({ status: "" });
-                setFeedback(feedback.map(fb => fb._id === id ? { ...fb, status: status } : fb));
+                setFeedback(feedback.map(fb => fb._id === id ? { ...fb, status: statusUpdates[id] } : fb));
             }
         } catch (error) {
             console.error('Error updating feedback:', error);
@@ -36,6 +37,7 @@ const Adminfeedback = () => {
                 const response = await axios.get("http://127.0.0.1:6262/feedback/get");
                 if (response.data && Array.isArray(response.data.feedbacks)) {
                     setFeedback(response.data.feedbacks);
+                    setIsLoading(false);
                 } else {
                     console.error("Invalid feedback data:", response.data);
                     setFeedback([]);
@@ -47,6 +49,16 @@ const Adminfeedback = () => {
         };
         fetchData();
     }, []);
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-gray-900">
+                <div className="text-center text-gray-400">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                    <p>Loading...</p>
+                    </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex w-full h-screen bg-gray-900 text-white">
@@ -55,7 +67,7 @@ const Adminfeedback = () => {
                     <img src={celogofull} alt="Logo" className="w-48" />
                 </div>
                 <nav className="space-y-3 flex-grow">
-                    <button onClick={() => navigate('/')} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                    <button onClick={() => navigate('/dash')} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
                         📊 Overview
                     </button>
                     <button onClick={() => navigate("/admincom")} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
@@ -64,12 +76,12 @@ const Adminfeedback = () => {
                     <button onClick={() => navigate("/admin")} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
                         👤 User Management
                     </button>
-                    <button onClick={() => navigate("/feedback")} className="flex items-center w-full p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                    <button onClick={() => navigate("/feedback")} className="flex items-center w-full p-3 bg-blue-500 text-white rounded-lg">
                         📄 Reports
                     </button>
                 </nav>
                 <div className="mt-auto">
-                    <button className="w-full p-3 bg-gray-700 rounded-md hover:bg-gray-600 transition-colors">
+                    <button onClick={() => navigate('/login')} className="w-full p-3 bg-gray-700 rounded-md hover:bg-gray-600 transition-colors">
                         📤 Logout
                     </button>
                 </div>
@@ -85,6 +97,7 @@ const Adminfeedback = () => {
                                 <th className="px-6 py-3 text-left text-lg font-medium text-gray-300 uppercase tracking-wider">Description</th>
                                 <th className="px-6 py-3 text-left text-lg font-medium text-gray-300 uppercase tracking-wider">Date</th>
                                 <th className="px-6 py-3 text-left text-lg font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                                <th className="px-6 py-3 text-left text-lg font-medium text-gray-300 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -93,35 +106,36 @@ const Adminfeedback = () => {
                                     <td className="px-6 py-3 text-l text-gray-300">{fb.username}</td>
                                     <td className="px-6 py-3 text-l text-gray-300">{fb.email}</td>
                                     <td className="px-6 py-3 text-l text-gray-300">{fb.description}</td>
-                                    <td className="px-6 py-3 text-l text-gray-300">{new Date(fb.timestamp).toLocaleString()}</td>
+                                    <td className="px-6 py-3 text-l text-gray-300">
+                                        {fb.timestamp ? new Date(fb.timestamp).toLocaleString() : "N/A"}
+                                    </td>
                                     <td className="px-6 py-3 text-l text-gray-300">{fb.status}</td>
                                     <td className="px-6 py-3">
-                                        <form onSubmit={(e) => {
-                                            e.preventDefault();
-                                            handleupdate(fb._id, update.status);
-                                        }}>
-                                            <select
-                                                className="bg-gray-700 text-white p-2 rounded"
-                                                name="status"
-                                                value={update.status}
-                                                onChange={handlechange}
-                                            >
-                                                <option value="Pending">Pending</option>
-                                                <option value="Resolved">Resolved</option>
-                                                <option value="Rejected">Rejected</option>
-                                            </select>
-                                            <button type="submit" className="ml-2 px-3 py-1.5 bg-blue-600 hover:bg-gray-300 rounded-lg" disabled={updateLoading}>
-                                                {updateLoading ? "Updating..." : "Submit"}
-                                            </button>
-                                        </form>
+                                        <select
+                                            className="bg-gray-700 text-white p-2 rounded"
+                                            value={statusUpdates[fb._id] || fb.status}
+                                            onChange={(e) => handleChange(fb._id, e.target.value)}
+                                        >
+                                            <option value="Pending">Pending</option>
+                                            <option value="Resolved">Resolved</option>
+                                            <option value="Rejected">Rejected</option>
+                                            <option value="Approved">Approved</option>
+                                        </select>
+                                        <button
+                                            onClick={() => handleUpdate(fb._id)}
+                                            className="ml-2 px-3 py-1.5 bg-blue-600 hover:bg-gray-500 rounded-lg"
+                                            disabled={updateLoading}
+                                        >
+                                            {updateLoading ? "Updating..." : "Submit"}
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
-                        </table>
-                    </div>
+                    </table>
                 </div>
             </div>
+        </div>
     );
 }
 

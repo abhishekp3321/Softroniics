@@ -22,7 +22,7 @@ console.log(token);
                 localStorage.setItem('id', response.data.userId);
                 localStorage.setItem('token', response.data.token);
                 if (response.data.role === 'admin') {
-                    Navigate('/admin');
+                    Navigate('/dash');
                 } else if (response.data.role === 'user') {
                     Navigate('/reghome');
                 }

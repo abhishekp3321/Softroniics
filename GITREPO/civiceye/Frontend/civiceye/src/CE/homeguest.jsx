@@ -18,6 +18,7 @@ import waste from '../assets/waste.png';
 import alert from '../assets/alert.png';
 import traffic from '../assets/traffic.png';
 import others from '../assets/others.png';
+import axios from 'axios';
 
 export const Homeguest = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +33,29 @@ export const Homeguest = () => {
 
         return () => clearTimeout(timer); // Clear timeout on unmount
     },);
-
+    const [stats, setStats] = useState(null);
+    const fetchComplaintsData = async () => {
+      try {
+          const response = await axios.get("http://127.0.0.1:6262/proof/data", {
+          });
+          console.log('API Response:', response.data);
+          const updatedStats = {
+              totalcomplaints: response.data.totalcomplaints || 0,
+              statuscount: {
+                  Approved: response.data.statuscount?.Approved || 0,
+                  Resolved: response.data.statuscount?.Resolved || 0
+              }
+          };
+          setStats(updatedStats);
+         
+      } catch (error) {
+          console.error('Error fetching complaints data:', error);
+      }
+  };
+  
+  useEffect(() => {
+      fetchComplaintsData();
+  }, []);
     const contactRef = useRef(null);
     const scrollToContact = (e) => {
         e.preventDefault();
@@ -128,28 +151,28 @@ export const Homeguest = () => {
                             Select the type of issue you'd like to report. Your vigilance helps keep our community safe and clean.
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6" data-aos="fade-up" data-aos-delay="200">
-                            <Link to="/signup" className="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                            <Link to="/login" className="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1  border-t-5 border-green-500">
                                 <div className="flex justify-center mb-4">
                                     <img src={waste} alt="Waste Dumping" className="w-16 h-16" />
                                 </div>
                                 <p className="text-white text-center font-semibold">Waste Dumping</p>
                                 <p className="text-gray-400 text-center text-sm mt-2">Report illegal waste disposal</p>
                             </Link>
-                            <Link to="/signup" className="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                            <Link to="/login" className="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1  border-t-5 border-red-500">
                                 <div className="flex justify-center mb-4">
                                     <img src={alert} alt="Public Nuisance" className="w-16 h-16" />
                                 </div>
                                 <p className="text-white text-center font-semibold">Public Nuisance</p>
                                 <p className="text-gray-400 text-center text-sm mt-2">Report disturbances and hazards</p>
                             </Link>
-                            <Link to="/signup" className="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                            <Link to="/login" className="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1  border-t-5 border-yellow-500">
                                 <div className="flex justify-center mb-4">
                                     <img src={traffic} alt="Traffic Violations" className="w-16 h-16" />
                                 </div>
                                 <p className="text-white text-center font-semibold">Traffic Violations</p>
                                 <p className="text-gray-400 text-center text-sm mt-2">Report unsafe driving or violations</p>
                             </Link>
-                            <Link to="/signup" className="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                            <Link to="/login" className="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1  border-t-5 border-purple-500">
                                 <div className="flex justify-center mb-4">
                                     <img src={others} alt="Others" className="w-16 h-16" />
                                 </div>
@@ -168,28 +191,29 @@ export const Homeguest = () => {
                             Together we're making a difference in our communities. See the real impact of citizen reports.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center">
+                            <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center border-t-5 transition-all duration-300 transform hover:-translate-y-1 border-blue-500">
                                 <div className="flex justify-center mb-6">
                                     <img src={tick} alt="Complaints Registered" className="w-16 h-16" />
                                 </div>
                                 <h3 className="text-xl font-bold text-white mb-2">Complaints Registered</h3>
-                                <p className="text-4xl font-bold text-blue-500">1,002</p>
+                                <p className="text-4xl font-bold text-blue-500">                  {stats ? stats.totalcomplaints || 0 : 0}
+                                </p>
                                 <p className="text-gray-400 mt-2">Citizen reports submitted</p>
                             </div>
-                            <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center">
-                                <div className="flex justify-center mb-6">
+                            <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center border-t-5 transition-all duration-300 transform hover:-translate-y-1 border-green-500">
+                                <div className="flex justify-center mb-6 ">
                                     <img src={reports} alt="Reports Filed" className="w-16 h-16" />
                                 </div>
-                                <h3 className="text-xl font-bold text-white mb-2">Reports Filed</h3>
-                                <p className="text-4xl font-bold text-blue-500">992</p>
+                                <h3 className="text-xl font-bold text-white mb-2 ">Reports Filed</h3>
+                                <p className="text-4xl font-bold text-blue-500"> {stats ? stats.statuscount?.Approved || 0 : 0}</p>
                                 <p className="text-gray-400 mt-2">Cases processed by authorities</p>
                             </div>
-                            <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center">
-                                <div className="flex justify-center mb-6">
+                            <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center border-t-5 transition-all duration-300 transform hover:-translate-y-1 border-yellow-500 ">
+                                <div className="flex justify-center mb-6 ">
                                     <img src={prize} alt="Rewards Distributed" className="w-16 h-16" />
                                 </div>
                                 <h3 className="text-xl font-bold text-white mb-2">Rewards Distributed</h3>
-                                <p className="text-4xl font-bold text-blue-500">886</p>
+                                <p className="text-4xl font-bold text-blue-500">  {stats ? stats.statuscount?.Resolved || 0 : 0}</p>
                                 <p className="text-gray-400 mt-2">Incentives for civic participation</p>
                             </div>
                         </div>
@@ -206,41 +230,41 @@ export const Homeguest = () => {
                             Our streamlined process makes it easy to report issues and get rewarded for your civic participation.
                         </p>
                         <div className="flex flex-wrap justify-center gap-8">
-                            <div className="relative flex flex-col items-center max-w-xs">
-                                <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
+                            <div className="relative flex flex-col items-center max-w-xs transition-all duration-300 transform hover:-translate-y-1">
+                                <div className="bg-yellow-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
                                     1
                                 </div>
-                                <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full">
+                                <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full  border-t-5 border-yellow-500">
                                     <p className="text-white font-medium">
                                         You Register the Complaint
                                     </p>
                                 </div>
                             </div>
-                            <div className="relative flex flex-col items-center max-w-xs">
-                                <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
+                            <div className="relative flex flex-col items-center max-w-xs transition-all duration-300 transform hover:-translate-y-1" >
+                                <div className="bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
                                     2
                                 </div>
-                                <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full">
+                                <div className="bg-gray-800  p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full  border-t-5 border-blue-500">
                                     <p className="text-white font-medium">
                                         Our Team Verifies and Shares it to the Responsible Authorities
                                     </p>
                                 </div>
                             </div>
-                            <div className="relative flex flex-col items-center max-w-xs">
-                                <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
+                            <div className="relative flex flex-col items-center max-w-xs transition-all duration-300 transform hover:-translate-y-1">
+                                <div className="bg-green-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
                                     3
                                 </div>
-                                <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full">
+                                <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full  border-t-5 border-green-500">
                                     <p className="text-white font-medium">
                                         The Responsible Authorities Process the Complaint
                                     </p>
                                 </div>
                             </div>
-                            <div className="relative flex flex-col items-center max-w-xs">
-                                <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
+                            <div className="relative flex flex-col items-center max-w-xs transition-all duration-300 transform hover:-translate-y-1">
+                                <div className="bg-orange-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4 ">
                                     4
                                 </div>
-                                <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full">
+                                <div className="bg-gray-800  p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full  border-t-5 border-orange-500">
                                     <p className="text-white font-medium">
                                         Your Incentive is Provided Once the Complaint is Processed
                                     </p>
@@ -252,15 +276,15 @@ export const Homeguest = () => {
 
                 {/* Contact Section */}
                 <div ref={contactRef} id="contact" className="py-16 bg-gray-900">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-20">
-                        <h2 className="text-3xl font-bold text-center mb-4 text-white" data-aos="fade-up">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-20 ">
+                        <h2 className="text-3xl font-bold text-center mb-4 text-white " data-aos="fade-up">
                             Contact Us
                         </h2>
                         <p className="text-center text-gray-400 mb-10 max-w-2xl mx-auto" data-aos="fade-up">
                             Have questions or need assistance? Our support team is here to help.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div className="flex flex-col items-center bg-gray-800 p-8 rounded-xl shadow-lg" data-aos="fade-up">
+                            <div className="flex flex-col items-center bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1  border-t-5 border-green-500" data-aos="fade-up">
                                 <div className="bg-blue-900 p-4 rounded-full mb-6">
                                     <img src={mail} alt="Support Mail" className="w-10 h-10" />
                                 </div>
@@ -274,7 +298,7 @@ export const Homeguest = () => {
                                     For general inquiries and support requests
                                 </p>
                             </div>
-                            <div className="flex flex-col items-center bg-gray-800 p-8 rounded-xl shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                            <div className="flex flex-col items-center bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1  border-t-5 border-blue-500" data-aos="fade-up" data-aos-delay="200">
                                 <div className="bg-blue-900 p-4 rounded-full mb-6">
                                     <img src={call} alt="Make A Call" className="w-10 h-10" />
                                 </div>

@@ -40,7 +40,7 @@ export const CEUserProfile = () => {
             alert("Failed to update user.");
         }
     };
-  handleexit = () => {
+  const handleexit = () => {
     navigate("/reghome");
   };
 

@@ -1,21 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import celogofull from '../assets/celogofull.png';
 import logout from '../assets/logout.png';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { use } from "react";
+import male from "../assets/male.png";
+
 
 export const Admincom = () => {
     const navigate = useNavigate();
 
     const [is, setIs] = useState(true);
     const [update, setUpdate] = useState(false);
-    
+
     const [complaints, setComplaints] = useState([]);
     const [filterStatus, setFilterStatus] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
     const [updatedata, setupdatedata] = useState({ status: "" });
+    const [dropdown, setDropdown] = useState(false)
+    const [active, setActive] = useState(null)
+    const dropdownref = useRef(null)
     const userid = localStorage.getItem("id");
 
     useEffect(() => {
@@ -34,14 +40,21 @@ export const Admincom = () => {
                 console.error("Error fetching complaints:", error.response?.data || error.message);
                 setComplaints([]);
                 toast.error("Failed to fetch complaints.");
-            } 
+            }
         };
         fetchComplaints();
     }, [userid]);
 
-    const filteredComplaints = filterStatus === "all" ? complaints : complaints.filter(com => com.status === filterStatus);
+    const filteredComplaints = (filterStatus === "all"
+        ? complaints
+        : complaints.filter(com => com.status === filterStatus)
+    ).slice().reverse();
     const currentItems = filteredComplaints.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     const totalPages = Math.ceil(filteredComplaints.length / itemsPerPage);
+    const statuschange = (event) => {
+        const { name, value } = event.target;
+        setupdatedata((prev) => ({ ...prev, [name]: value }));
+    };
 
     const statussubmit = async (complaintId, event) => {
         event.preventDefault();
@@ -127,14 +140,14 @@ export const Admincom = () => {
                         <table className="min-w-full divide-y divide-gray-700">
                             <thead className="bg-gray-700">
                                 <tr>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase">Date</th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase">Description</th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase">Status</th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase">Location</th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase">Category</th>
-                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase">Proof</th>
-                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase">Download</th>
-                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase">Change Status</th>
+                                    <th className="px-4 py-3 text-left text-lg font-medium text-gray-300 uppercase">Date</th>
+                                    <th className="px-4 py-3 text-left text-lg font-medium text-gray-300 uppercase">Description</th>
+                                    <th className="px-4 py-3 text-left text-lg font-medium text-gray-300 uppercase">Status</th>
+                                    <th className="px-4 py-3 text-left text-lg font-medium text-gray-300 uppercase">Location</th>
+                                    <th className="px-4 py-3 text-left text-lg font-medium text-gray-300 uppercase">Category</th>
+                                    <th className="px-4 py-3 text-center text-lg font-medium text-gray-300 uppercase">Proof</th>
+                                    <th className="px-4 py-3 text-center text-lg font-medium text-gray-300 uppercase">Download</th>
+                                    <th className="px-4 py-3 text-center text-lg font-medium text-gray-300 uppercase">Change Status</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-gray-800 divide-y divide-gray-700">
@@ -149,6 +162,7 @@ export const Admincom = () => {
                                             {com.proof ? <a href={`http://127.0.0.1:6262/${com.proof}`} target="_blank" rel="noopener noreferrer">View Proof</a> : "No Proof"}
                                         </td>
                                         <td className="px-4 py-4 text-center text-sm">
+
                                             {com.proof ? (
                                                 <button onClick={() => downloadProof(`http://127.0.0.1:6262/${com.proof}`)} className="inline-flex justify-center items-center px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition" disabled={!com.proof}>
                                                     Download
@@ -156,27 +170,74 @@ export const Admincom = () => {
                                             ) : "No Proof"}
                                         </td>
                                         <td className="px-4 py-4 text-center text-sm">
-                                            <form onSubmit={(event) => statussubmit(com._id, event)}>
-                                                <select value={updatedata.status} onChange={(e) => setupdatedata({ ...updatedata, status: e.target.value })} className="border rounded p-2 bg-gray-700 text-white">
-                                                    <option value="">Select Status</option>
-                                                    <option value="Pending">Pending</option>
-                                                    <option value="Resolved">Resolved</option>
-                                                    <option value="Rejected">Rejected</option>
-                                                    <option value="Approved">Approved</option>
-                                                </select>
-                                                <button type="submit" className="ml-2 px-3 py-1.5 bg-blue-600 hover:bg-gray-300 rounded-lg" disabled={update}>
-                                                    {update ? "Updating..." : "Submit"}
-                                                </button>
-                                            </form>
-                                        </td>
+  <div className="relative inline-block text-left">
+    <button
+      onClick={() => {
+        // Toggle dropdown and set active complaint
+        if (active === com._id) {
+          setDropdown(!dropdown);
+        } else {
+          setActive(com._id);
+          setDropdown(true);
+        }
+      }}
+      className="inline-flex justify-center items-center px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+    >
+      Update
+    </button>
+
+    {dropdown && active === com._id && (
+      <>
+        {/* Overlay for closing dropdown on outside click */}
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => {
+            setDropdown(false);
+            setActive(null);
+          }}
+        ></div>
+
+        {/* Dropdown form */}
+        <form
+          onSubmit={(event) => statussubmit(com._id, event)}
+          className="absolute z-50 mt-2 right-0 bg-gray-800 rounded-lg shadow-md p-4 w-64"
+        >
+          <select
+            id="status"
+            name="status"
+            className="p-2 border rounded-md bg-gray-700 text-white mb-2 w-full"
+            value={updatedata.status}
+            onChange={statuschange}
+          >
+            <option value="">Select Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+
+          <button
+            type="submit"
+            className={`w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 ${update ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={update}
+          >
+            {update ? "Updating..." : "Update"}
+          </button>
+        </form>
+      </>
+    )}
+  </div>
+</td>
                                     </tr>
+
                                 ))}
+
                             </tbody>
                         </table>
                     </div>
                 )}
                 {filteredComplaints.length > itemsPerPage && (
-                    <div className="flex justify-center mt-4">
+                    <div className="flex justify-center mt-4  bottom-0">
                         <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="px-4 py-2 mx-1 bg-gray-700 rounded-md hover:bg-gray-600 disabled:opacity-50">Previous</button>
                         <span>{currentPage} / {totalPages}</span>
                         <button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="px-4 py-2 mx-1 bg-gray-700 rounded-md hover:bg-gray-600 disabled:opacity-50">Next</button>

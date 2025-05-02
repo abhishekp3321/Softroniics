@@ -13,7 +13,7 @@ function isprime(n){
 }
 const num = parseInt(prompt("Enter a number:"));
 
-if (isPrime(num)) {
+if (isprime(num)) {
   console.log(`${num} is a prime number.`);
 } else {
   console.log(`${num} is not a prime number.`);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {   useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -61,7 +61,7 @@ export const Complaint = () => {
         proof: null
       });
 
-      navigate('/complaint');
+      navigate('/reghome');
     } catch (error) {
       console.error("Error submitting complaint:", error);
       toast.error(error.response?.data?.message || "Failed to register complaint");
@@ -75,7 +75,7 @@ export const Complaint = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+    <div className="flex items-center justify-center  bg-gray-900 text-white">
       <div className="w-full max-w-2xl p-6 bg-gray-800 rounded-lg shadow-lg">
         <h1 className="text-2xl font-semibold text-center">Report Issues Seamlessly</h1>
         <p className="mt-2 text-center text-gray-400">
@@ -145,18 +145,18 @@ export const Complaint = () => {
               </p>
             )}
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between space-x-9">
             <button 
               type="submit"
-              className="w-[48%] px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
+              className="w-[44%] px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
             >
               Submit
             </button > 
-            <button onClick={handelcancel}               className="w-[48%] px-4 py-2 text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none "
+            <button onClick={handelcancel}
+              type="submit"
+              className="w-[44%] px-4 py-2 text-white bg-gray-600 rounded-md hover:bg-blue-700 focus:outline-none"
             >
-      
-              Cancel
-            </button>
+cancel            </button > 
           </div>
         </form>
       </div>

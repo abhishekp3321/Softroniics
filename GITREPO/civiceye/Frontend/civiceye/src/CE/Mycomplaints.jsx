@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import celogofullpng from "../assets/celogofull.png";
 import logout from '../assets/logout.png';
+import { Complaint } from "./Complaint";
 
 const MyComplaints = () => {
     const [isLoading, setIsLoading] = useState(true);
-   
+   const [popup, setPopup] = useState(false);
     const navigate = useNavigate();
     const [complaints, setComplaints] = useState([]);
     const userid = localStorage.getItem("id");
@@ -55,10 +56,36 @@ const MyComplaints = () => {
                 <h1 className="text-3xl md:text-4xl font-bold text-center">Your Complaints</h1>
                 <div className="h-1 w-20 bg-blue-600 mt-4 rounded-full"></div>
             </div>
+                {popup && (
+                      <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs  bg-gray-950/80 px-6">
+                        <div className="relative flex items-center  justify-center">
+                          <button
+                            onClick={() => setPopup(false)}
+                            className="absolute top-3 right-3 text-gray-400 hover:text-white transition duration-200"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                          <Complaint />
+                        </div>
+                      </div>
+                    )}
             <div className="w-full max-w-6xl">
                 <div className="bg-gray-800 shadow-md rounded-xl mb-6 p-4 flex justify-between items-center">
                     <button
-                        onClick={() => navigate('/complaint')}
+                        onClick={() => setPopup(true)}
                         className="px-4 py-2 bg-blue-600 text-white cursor-pointer rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
                     >
                         Submit New Complaint

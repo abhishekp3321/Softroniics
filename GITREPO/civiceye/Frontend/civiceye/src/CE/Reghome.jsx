@@ -27,7 +27,7 @@ import toast from "react-hot-toast";
 
 const Profilelogout = ({ onClose }) => {
   const navigate = useNavigate();
- 
+
 
   return (
     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-700 rounded-lg shadow-lg p-8 w-96">
@@ -90,34 +90,42 @@ const Profilelogout = ({ onClose }) => {
 export { Profilelogout };
 
 export const Reghome = () => {
-  
- 
+
+
   const [popup, setPopup] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false); // State for logout popup
   const [feedbackpop, setfeedbackpop] = useState(false);
-  const [deletepopup,setdeletepopup] = useState(false)
+  const [deletepopup, setdeletepopup] = useState(false)
 
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const contactRef = useRef(null);
   const userid = localStorage.getItem("id");
   const aboutRef = useRef(null);
- const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState(null);
   const fetchComplaintsData = async () => {
     try {
-        const response = await axios.get("http://127.0.0.1:6262/proof/data")
-        
-        
-        setStats(response.data.stats);
-    } catch (error) {
-        console.error('Error fetching complaints data:', error);
-    }
-};
+      const response = await axios.get("http://127.0.0.1:6262/proof/data", {
+      });
+      console.log('API Response:', response.data);
+      const updatedStats = {
+        totalcomplaints: response.data.totalcomplaints || 0,
+        statuscount: {
+          Approved: response.data.statuscount?.Approved || 0,
+          Resolved: response.data.statuscount?.Resolved || 0
+        }
+      };
+      setStats(updatedStats);
 
-useEffect(() => {
+    } catch (error) {
+      console.error('Error fetching complaints data:', error);
+    }
+  };
+
+  useEffect(() => {
     fetchComplaintsData();
-}, []);
+  }, []);
   const deleteAccount = async () => {
     try {
       if (!userid) {
@@ -210,11 +218,11 @@ useEffect(() => {
   const closeLogoutPopup = () => {
     setShowLogoutPopup(false);
   };
-  const handelfeedClick=()=>{
+  const handelfeedClick = () => {
     setfeedbackpop(true)
 
   }
-  const handeldeletepopup =() =>{
+  const handeldeletepopup = () => {
     setdeletepopup(true)
   }
 
@@ -290,15 +298,15 @@ useEffect(() => {
                 </Link>
 
                 <button
-  className="block w-full cursor-pointer text-left px-4 py-2 text-red-500 hover:bg-gray-700 transition duration-200"
-  onClick={() => {
-    deleteAccount();
-    setDropdown(false);
-    handeldeletepopup(); // Call the function here
-  }}
->
-  Delete Account
-</button>
+                  className="block w-full cursor-pointer text-left px-4 py-2 text-red-500 hover:bg-gray-700 transition duration-200"
+                  onClick={() => {
+                    deleteAccount();
+                    setDropdown(false);
+                    handeldeletepopup(); // Call the function here
+                  }}
+                >
+                  Delete Account
+                </button>
                 <button
                   className="block w-full cursor-pointer text-left px-4 py-2 text-gray-300 hover:bg-gray-700 transition duration-200"
                   onClick={handleLogoutClick} // Open logout popup
@@ -311,64 +319,64 @@ useEffect(() => {
         </div>
       </nav>
       {deletepopup && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-gray-900/80">
-                            <div className="relative bg-gray-800 p-6 rounded-lg shadow-xl max-w-3xl w-full">
-                                <button
-                                    onClick={() => setdeletepopup(false)}
-                                    className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
-                                >
-                                    ✖
-                                </button>
-                                <AccountDelete onClose={() => setdeletepopup(false)} />
-                            </div>
-                        </div>
-                    )}
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-gray-900/80">
+          <div className="relative bg-gray-800 p-6 rounded-lg shadow-xl max-w-3xl w-full">
+            <button
+              onClick={() => setdeletepopup(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
+            >
+              ✖
+            </button>
+            <AccountDelete onClose={() => setdeletepopup(false)} />
+          </div>
+        </div>
+      )}
 
       {/* Main Content - add padding top to accommodate fixed navbar */}
       <div className="pt-20">
         {/* Carousel */}
         <Carousel
-  autoPlay
-  showThumbs={false}
-  showStatus={false}
-  infiniteLoop
-  interval={5000}
-  className="h-[70vh] w-[50vw] flex justify-center sm:mx-120  items-center"
->
-  <div>
-    <img
-      src={parking}
-      alt="Civic Engagement"
-      className="w-[20%] object-fill  h-[60vh]"
-    />
-  </div>
-  <div>
-    <img
-      src={shake}
-      alt="Community Safety"
-      className="w-full object-fill h-[60vh]"
-    />
-  </div>
-  <div>
-    <img
-      src={put}
-      alt="Civic Responsibility"
-      className="w-full object-fill h-[60vh]"
-    />
-  </div>
-</Carousel>
+          autoPlay
+          showThumbs={false}
+          showStatus={false}
+          infiniteLoop
+          interval={5000}
+          className="h-[70vh] w-[50vw] flex justify-center sm:mx-120  items-center"
+        >
+          <div>
+            <img
+              src={parking}
+              alt="Civic Engagement"
+              className="w-[20%] object-fill  h-[60vh]"
+            />
+          </div>
+          <div>
+            <img
+              src={shake}
+              alt="Community Safety"
+              className="w-full object-fill h-[60vh]"
+            />
+          </div>
+          <div>
+            <img
+              src={put}
+              alt="Civic Responsibility"
+              className="w-full object-fill h-[60vh]"
+            />
+          </div>
+        </Carousel>
 
         {/* Complaint Popup */}
         {popup && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-gray-900/80">
-            <div className="relative bg-gray-800 p-6 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-gray-700">
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs  bg-gray-950/80 px-6">
+            <div className="relative flex items-center  justify-center">
               <button
                 onClick={() => setPopup(false)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition duration-200"
+                className="absolute top-3 right-3 text-gray-400 hover:text-white transition duration-200"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
+                  className="h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -480,18 +488,11 @@ useEffect(() => {
         {/* Statistics Section */}
         <div className="bg-gray-900 py-16 px-4 sm:px-20" data-aos="fade-up">
           <div className="max-w-6xl mx-auto">
-            <h2
-              className="text-3xl font-bold text-center mb-4 text-white"
-              data-aos="fade-up"
-            >
+            <h2 className="text-3xl font-bold text-center mb-4 text-white" data-aos="fade-up">
               Impact Statistics
             </h2>
-            <p
-              className="text-center text-gray-400 mb-10 max-w-2xl mx-auto"
-              data-aos="fade-up"
-            >
-              Together we're making a difference in our communities. See the real
-              impact of citizen reports.
+            <p className="text-center text-gray-400 mb-10 max-w-2xl mx-auto" data-aos="fade-up">
+              Together we're making a difference in our communities. See the real impact of citizen reports.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center border-t-5 border-blue-500">
@@ -501,39 +502,38 @@ useEffect(() => {
                 <h3 className="text-xl font-bold text-white mb-2">
                   Complaints Registered
                 </h3>
-                <div className="text-4xl font-bold text-blue-500 "> {stats ? stats.totalComplaints : "Loading..."}
+                <div className="text-4xl font-bold text-blue-500 ">
+                  {stats ? stats.totalcomplaints || 0 : 0}
                 </div>
                 <p className="text-gray-400 mt-2">
                   Citizen reports submitted
                 </p>
               </div>
-              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center  border-t-5 border-green-500">
+              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center border-t-5 border-green-500">
                 <div className="flex justify-center mb-6">
                   <img src={reports} alt="Reports Filed" className="w-16 h-16" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">
-                  Reports Filed
+                  Reports Approved
                 </h3>
-                <div className="text-4xl font-bold text-blue-500">{stats ? stats.statusCounts?.Approved ?? 0 : "Loading..."}</div>
+                <div className="text-4xl font-bold text-blue-500">
+                  {stats ? stats.statuscount?.Approved || 0 : 0}
+                </div>
                 <p className="text-gray-400 mt-2">
-                  Cases processed by authorities
+                  Cases Approved by authorities
                 </p>
               </div>
-              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center  border-t-5 border-yellow-500">
+              <div className="bg-gray-800 p-8 rounded-xl shadow-lg text-center border-t-5 border-yellow-500">
                 <div className="flex justify-center mb-6">
-                  <img
-                    src={prize}
-                    alt="Rewards Distributed"
-                    className="w-16 h-16"
-                  />
+                  <img src={prize} alt="Rewards Distributed" className="w-16 h-16" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">
-                  Rewards Distributed
-                </h3>
-                <div className="text-4xl font-bold text-blue-500">   {stats ? stats.statusCounts?.Resolved ?? 0 : "Loading..."}</div>
+                  Cases Resolved                </h3>
+                <div className="text-4xl font-bold text-blue-500">
+                  {stats ? stats.statuscount?.Resolved || 0 : 0}
+                </div>
                 <p className="text-gray-400 mt-2">
-                  Incentives for civic participation
-                </p>
+                  Cases  Resolved by authorities                </p>
               </div>
             </div>
           </div>
@@ -547,7 +547,7 @@ useEffect(() => {
             className="max-w-8xl mx-auto px-4 sm:px-20"
             data-aos="fade-right"
           >
-            <h2 
+            <h2
               className="text-3xl font-bold text-center mb-4 text-white"
               data-aos="fade-up"
             >
@@ -560,47 +560,47 @@ useEffect(() => {
               Our streamlined process makes it easy to report issues and get
               rewarded for your civic participation.
             </p>
-            <div className="flex flex-wrap justify-center gap-8">
-              <div className="relative flex flex-col items-center max-w-xs">
-                <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
+            <div className="flex flex-wrap justify-center gap-8 ">
+              <div className="relative flex flex-col items-center max-w-xs  transition-all duration-300 transform hover:-translate-y-1">
+                <div className="bg-yellow-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
                   1
                 </div>
-                <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full">
+                <div className="bg-gray-800  p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full border-t-5 border-yellow-500">
                   <p className="text-white font-medium">
                     You Register the Complaint
                   </p>
                 </div>
               </div>
-              <div className="relative flex flex-col items-center max-w-xs">
+              <div className="relative flex flex-col items-center max-w-xs  transition-all duration-300 transform hover:-translate-y-1">
                 <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
                   2
                 </div>
-                <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full">
+                <div className="bg-gray-800   p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full border-t-5   transform border-blue-500">
                   <p className="text-white font-medium">
                     Our Team Verifies and Shares it to the Responsible
                     Authorities
                   </p>
                 </div>
               </div>
-              <div className="relative flex flex-col items-center max-w-xs">
-                <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
+              <div className="relative flex flex-col items-center max-w-xs  transition-all duration-300 transform hover:-translate-y-1 hover">
+                <div className="bg-green-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
                   3
                 </div>
-                <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full">
+                <div className="bg-gray-800  p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full border-t-5 border-green-500">
                   <p className="text-white font-medium">
                     The Responsible Authorities Process the Complaint
                   </p>
                 </div>
               </div>
-              <div className="relative flex flex-col items-center max-w-xs">
-                <div className="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
+              <div className="relative flex flex-col items-center max-w-xs   transition-all duration-300 transform hover:-translate-y-1 hover">
+                <div className="bg-orange-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4">
                   4
                 </div>
-                <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full">
+                <button className="bg-gray-800   p-6 rounded-lg shadow-md hover:shadow-lg   text-center h-full border-t-5 border-orange-500">
                   <p className="text-white font-medium">
                     Your Incentive is Provided Once the Complaint is Processed
                   </p>
-                </div>
+                </button>
               </div>
             </div>
           </div>
@@ -628,7 +628,7 @@ useEffect(() => {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div
-                className="flex flex-col items-center bg-gray-800 p-8 rounded-xl shadow-lg"
+                className="flex flex-col items-center border-t-5 border-green-500 bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover"
                 data-aos="fade-up"
               >
                 <div className="bg-blue-900 p-4 rounded-full mb-6">
@@ -645,7 +645,7 @@ useEffect(() => {
                 </p>
               </div>
               <div
-                className="flex flex-col items-center bg-gray-800 p-8 rounded-xl shadow-lg"
+                className="flex flex-col items-center border-t-5 border-blue-500 bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover"
                 data-aos="fade-up"
                 data-aos-delay="200"
               >
@@ -663,7 +663,7 @@ useEffect(() => {
                 </p>
               </div>
             </div>
-            
+
 
             {/* Feedback Form */}
             <div
@@ -694,20 +694,20 @@ useEffect(() => {
             </div>
           </div>
         </div>
-         {/* Logout Popup */}
-         {feedbackpop && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-gray-900/80">
-                            <div className="relative bg-gray-800 p-6 rounded-lg shadow-xl max-w-3xl w-full">
-                                <button
-                                    onClick={() => setfeedbackpop(false)}
-                                    className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
-                                >
-                                    ✖
-                                </button>
-                                <Userfeedback onClose={() => setfeedbackpop(false)} />
-                            </div>
-                        </div>
-                    )}
+        {/* Logout Popup */}
+        {feedbackpop && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-gray-900/80">
+            <div className="relative bg-gray-800 p-6 rounded-lg shadow-xl max-w-3xl w-full">
+              <button
+                onClick={() => setfeedbackpop(false)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
+              >
+                ✖
+              </button>
+              <Userfeedback onClose={() => setfeedbackpop(false)} />
+            </div>
+          </div>
+        )}
 
 
         {/* Footer */}
@@ -855,28 +855,28 @@ useEffect(() => {
 };
 const Userfeedback = ({ onClose }) => {
   return (
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white text-center">
-          <h2 className="text-xl font-semibold mb-4">FedddBack is Submited</h2>
-          <button
-              onClick={onClose}
-              className="mt-4 px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600"
-          >
-              Close
-          </button>
-      </div>
+    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white text-center">
+      <h2 className="text-xl font-semibold mb-4">FedddBack is Submited</h2>
+      <button
+        onClick={onClose}
+        className="mt-4 px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600"
+      >
+        Close
+      </button>
+    </div>
   );
 };
 const AccountDelete = ({ onClose }) => {
   return (
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white text-center">
-          <h2 className="text-xl font-semibold mb-4">Account Has Been Deleted</h2>
-          <button
-              onClick={onClose}
-              className="mt-4 px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600"
-          >
-              Close
-          </button>
-      </div>
+    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white text-center">
+      <h2 className="text-xl font-semibold mb-4">Account Has Been Deleted</h2>
+      <button
+        onClick={onClose}
+        className="mt-4 px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600"
+      >
+        Close
+      </button>
+    </div>
   );
 };
 export default Reghome;
